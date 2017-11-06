@@ -40,6 +40,7 @@
 		51BF7E361FB007BA0040BE9D /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 51BF7E201FB007BA0040BE9D /* README.md */; };
 		51BF7E3C1FB00D4B0040BE9D /* TBCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 51BF7E3B1FB00D4A0040BE9D /* TBCollectionViewController.m */; };
 		51BF7E3E1FB036710040BE9D /* 2017-11-06 14_18_56.gif in Resources */ = {isa = PBXBuildFile; fileRef = 51BF7E3D1FB036710040BE9D /* 2017-11-06 14_18_56.gif */; };
+		51BF7E401FB0387B0040BE9D /* 2017-11-06 14_26_04.gif in Resources */ = {isa = PBXBuildFile; fileRef = 51BF7E3F1FB0387B0040BE9D /* 2017-11-06 14_26_04.gif */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -124,6 +125,7 @@
 		51BF7E3A1FB00D4A0040BE9D /* TBCollectionViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TBCollectionViewController.h; sourceTree = "<group>"; };
 		51BF7E3B1FB00D4A0040BE9D /* TBCollectionViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TBCollectionViewController.m; sourceTree = "<group>"; };
 		51BF7E3D1FB036710040BE9D /* 2017-11-06 14_18_56.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = "2017-11-06 14_18_56.gif"; sourceTree = "<group>"; };
+		51BF7E3F1FB0387B0040BE9D /* 2017-11-06 14_26_04.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = "2017-11-06 14_26_04.gif"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -206,6 +208,7 @@
 		51BF7DE51FB007570040BE9D /* code */ = {
 			isa = PBXGroup;
 			children = (
+				51BF7E3F1FB0387B0040BE9D /* 2017-11-06 14_26_04.gif */,
 				51BF7E3D1FB036710040BE9D /* 2017-11-06 14_18_56.gif */,
 				51BF7DEF1FB007B90040BE9D /* MJRefresh */,
 				51BF7DE61FB007570040BE9D /* TBMainVC.h */,
@@ -432,6 +435,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				51BF7E211FB007BA0040BE9D /* LICENSE in Resources */,
+				51BF7E401FB0387B0040BE9D /* 2017-11-06 14_26_04.gif in Resources */,
 				51BF7DC01FB007330040BE9D /* LaunchScreen.storyboard in Resources */,
 				51BF7E361FB007BA0040BE9D /* README.md in Resources */,
 				51BF7E301FB007BA0040BE9D /* MJRefresh.bundle in Resources */,
