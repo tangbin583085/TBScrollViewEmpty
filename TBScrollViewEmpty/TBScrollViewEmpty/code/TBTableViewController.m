@@ -9,10 +9,13 @@
 #import "TBTableViewController.h"
 #import "MJRefresh.h"
 #import "UIScrollView+TBEmpty.h"
+#import "Reachability.h"
 
 @interface TBTableViewController ()<TBEmptyDelegate>
 
 @property (nonatomic, strong)NSMutableArray *dataSource;
+
+@property (nonatomic) Reachability *internetReachability;
 
 @end
 
@@ -20,6 +23,10 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    self.internetReachability = [Reachability reachabilityForInternetConnection];
+    [self.internetReachability startNotifier];
+    [self networkdStatus:self.internetReachability];
     
     self.dataSource = [NSMutableArray array];
     
@@ -41,6 +48,27 @@
     self.tableView.tb_showEmptyView = YES;
     self.tableView.tb_EmptyDelegate = self;
 }
+
+#pragma mark <网络状态>
+- (NetworkStatus)networkdStatus:(Reachability *)reachability {
+    NetworkStatus netStatus = [reachability currentReachabilityStatus];
+    switch (netStatus)
+    {
+        case NotReachable:
+            NSLog(@"无网络");
+            break;
+        case ReachableViaWWAN:        {
+            NSLog(@"Reachable WWAN");
+            break;
+        }
+        case ReachableViaWiFi:        {
+            NSLog(@"WIFI");
+            break;
+        }
+    }
+    return netStatus;
+}
+
 
 #pragma mark <TBEmptyDelegate>
 //- (UIView *)tb_emptyView {
