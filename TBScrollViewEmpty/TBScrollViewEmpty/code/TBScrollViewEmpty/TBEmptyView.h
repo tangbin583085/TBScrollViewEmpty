@@ -7,15 +7,24 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "TBNetworkReachability.h"
+
+@protocol TBEmptyViewDelegate <NSObject>
+
+- (void)btnClick:(UIButton *)btn;
+
+@end
 
 @interface TBEmptyView : UIView
 
-- (void)setImageView:(UIImage *)image isShow:(BOOL)show;
+@property (nonatomic, assign)id<TBEmptyViewDelegate> delegate; // 代理
 
-- (void)setTitltString:(NSMutableAttributedString *)attrString isShow:(BOOL)show;
+- (void)setImageView:(UIImage *)image network:(TBNetworkStatus)status isShow:(BOOL)show;
 
-- (void)setDetailString:(NSMutableAttributedString *)attrString isShow:(BOOL)show;
+- (void)setTitltString:(NSAttributedString *)attrString network:(TBNetworkStatus)status isShow:(BOOL)show;
 
-- (void)setButonTitle:(NSMutableAttributedString *)titleAttrString forstate:(UIControlState)state isShow:(BOOL)show;
+- (void)setDetailString:(NSAttributedString *)attrString network:(TBNetworkStatus)status isShow:(BOOL)show;
+
+- (void)setButonTitle:(NSAttributedString *)titleAttrString network:(TBNetworkStatus)status isShow:(BOOL)show;
 
 @end

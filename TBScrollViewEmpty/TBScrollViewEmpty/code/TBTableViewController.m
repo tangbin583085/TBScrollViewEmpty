@@ -9,7 +9,7 @@
 #import "TBTableViewController.h"
 #import "MJRefresh.h"
 #import "UIScrollView+TBEmpty.h"
-#import "TBNetworkReachability.h"
+#import "TBScrollViewEmpty.h"
 
 @interface TBTableViewController ()<TBSrollViewEmptyDelegate>
 
@@ -120,14 +120,14 @@
         static BOOL emptyTemp = NO;
         [self.dataSource removeAllObjects];
         
-        if (emptyTemp) {
-            for (int i = 0; i < 20; i++) {
-                [self.dataSource addObject:[NSString stringWithFormat:@"我是第%d个", i]];
-            }
-            emptyTemp = NO;
-        }else {
-            emptyTemp = YES;
-        }
+//        if (emptyTemp) {
+////            for (int i = 0; i < 20; i++) {
+////                [self.dataSource addObject:[NSString stringWithFormat:@"我是第%d个", i]];
+////            }
+//            emptyTemp = NO;
+//        }else {
+//            emptyTemp = YES;
+//        }
         
         [self.tableView.mj_header endRefreshing];
         [self.tableView reloadData];
