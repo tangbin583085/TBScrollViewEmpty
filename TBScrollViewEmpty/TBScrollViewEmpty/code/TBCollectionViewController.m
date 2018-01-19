@@ -22,6 +22,8 @@ static NSString * const reuseIdentifier = @"Cell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    self.title = @"Collection";
+    
     self.dataSource = [NSMutableArray array];
     
     UICollectionView * collectionView = [self createCollectionView];
@@ -35,6 +37,7 @@ static NSString * const reuseIdentifier = @"Cell";
     self.extendedLayoutIncludesOpaqueBars = YES;
     if (@available(iOS 11.0, *)) {
         self.collectionView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
+        self.collectionView.contentInset = UIEdgeInsetsMake(64, 0, 49, 0);
     } else {
         self.automaticallyAdjustsScrollViewInsets = NO;
     }
@@ -43,8 +46,10 @@ static NSString * const reuseIdentifier = @"Cell";
 }
 
 #pragma mark <TBSrollViewEmptyDelegate>
-- (BOOL)tb_showEmptyView {
-    return YES;
+- (void)tb_emptyButtonClick:(UIButton *)btn network:(TBNetworkStatus)status {
+
+    NSLog(@"%s  %@", __func__, btn);
+    [self loadNewData];
 }
 
 

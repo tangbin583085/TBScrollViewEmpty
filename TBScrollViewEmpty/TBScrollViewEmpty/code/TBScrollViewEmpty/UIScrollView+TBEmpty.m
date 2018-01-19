@@ -42,7 +42,7 @@ static const BOOL tb_isShowTitleLB = YES; // 显示标题
 
 static const BOOL tb_isShowDetailLB = YES; // 显示详情
 
-static const BOOL tb_isShowButton = NO; // 显示按钮
+static const BOOL tb_isShowButton = YES; // 显示按钮
 
 - (TBNetworkReachability *)internetReachability {
     

@@ -24,6 +24,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    self.title = @"TableView";
+    
     self.dataSource = [NSMutableArray array];
     
     MJRefreshHeader *mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadNewData)];
@@ -34,6 +36,7 @@
     self.extendedLayoutIncludesOpaqueBars = YES;
     if (@available(iOS 11.0, *)) {
         self.tableView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
+        self.tableView.contentInset = UIEdgeInsetsMake(64, 0, 49, 0);
     } else {
         self.automaticallyAdjustsScrollViewInsets = NO;
     }
@@ -116,11 +119,11 @@
 //    }
 //}
 //
-//- (void)tb_emptyButtonClick:(UIButton *)btn network:(TBNetworkStatus)status {
-//
-//    NSLog(@"%s  %@", __func__, btn);
-//    [self loadNewData];
-//}
+- (void)tb_emptyButtonClick:(UIButton *)btn network:(TBNetworkStatus)status {
+
+    NSLog(@"%s  %@", __func__, btn);
+    [self loadNewData];
+}
 //
 //
 //- (CGPoint)tb_emptyViewOffset:(UIScrollView *)scrollView network:(TBNetworkStatus)status {
