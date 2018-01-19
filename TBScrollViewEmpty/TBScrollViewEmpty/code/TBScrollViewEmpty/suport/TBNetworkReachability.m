@@ -14,10 +14,10 @@
 
 #import <CoreFoundation/CoreFoundation.h>
 
-#import "Reachability.h"
+#import "TBNetworkReachability.h"
 
 #pragma mark IPv6 Support
-//Reachability fully support IPv6.  For full details, see ReadMe.md.
+//TBNetworkReachability fully support IPv6.  For full details, see ReadMe.md.
 
 
 NSString *kReachabilityChangedNotification = @"kNetworkReachabilityChangedNotification";
@@ -31,7 +31,7 @@ static void PrintReachabilityFlags(SCNetworkReachabilityFlags flags, const char*
 {
 #if kShouldPrintReachabilityFlags
 
-    NSLog(@"Reachability Flag Status: %c%c %c%c%c%c%c%c%c %s\n",
+    NSLog(@"TBNetworkReachability Flag Status: %c%c %c%c%c%c%c%c%c %s\n",
           (flags & kSCNetworkReachabilityFlagsIsWWAN)				? 'W' : '-',
           (flags & kSCNetworkReachabilityFlagsReachable)            ? 'R' : '-',
 
@@ -52,24 +52,24 @@ static void ReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkReach
 {
 #pragma unused (target, flags)
 	NSCAssert(info != NULL, @"info was NULL in ReachabilityCallback");
-	NSCAssert([(__bridge NSObject*) info isKindOfClass: [Reachability class]], @"info was wrong class in ReachabilityCallback");
+	NSCAssert([(__bridge NSObject*) info isKindOfClass: [TBNetworkReachability class]], @"info was wrong class in ReachabilityCallback");
 
-    Reachability* noteObject = (__bridge Reachability *)info;
+    TBNetworkReachability* noteObject = (__bridge TBNetworkReachability *)info;
     // Post a notification to notify the client that the network reachability changed.
     [[NSNotificationCenter defaultCenter] postNotificationName: kReachabilityChangedNotification object: noteObject];
 }
 
 
-#pragma mark - Reachability implementation
+#pragma mark - TBNetworkReachability implementation
 
-@implementation Reachability
+@implementation TBNetworkReachability
 {
 	SCNetworkReachabilityRef _reachabilityRef;
 }
 
 + (instancetype)reachabilityWithHostName:(NSString *)hostName
 {
-	Reachability* returnValue = NULL;
+	TBNetworkReachability* returnValue = NULL;
 	SCNetworkReachabilityRef reachability = SCNetworkReachabilityCreateWithName(NULL, [hostName UTF8String]);
 	if (reachability != NULL)
 	{
@@ -90,7 +90,7 @@ static void ReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkReach
 {
 	SCNetworkReachabilityRef reachability = SCNetworkReachabilityCreateWithAddress(kCFAllocatorDefault, hostAddress);
 
-	Reachability* returnValue = NULL;
+	TBNetworkReachability* returnValue = NULL;
 
 	if (reachability != NULL)
 	{
@@ -163,23 +163,23 @@ static void ReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkReach
 
 #pragma mark - Network Flag Handling
 
-- (NetworkStatus)networkStatusForFlags:(SCNetworkReachabilityFlags)flags
+- (TBNetworkStatus)networkStatusForFlags:(SCNetworkReachabilityFlags)flags
 {
-	PrintReachabilityFlags(flags, "networkStatusForFlags");
+//    PrintReachabilityFlags(flags, "networkStatusForFlags");
 	if ((flags & kSCNetworkReachabilityFlagsReachable) == 0)
 	{
 		// The target host is not reachable.
-		return NotReachable;
+		return TBNetworkStatusNotReachable;
 	}
 
-    NetworkStatus returnValue = NotReachable;
+    TBNetworkStatus returnValue = TBNetworkStatusNotReachable;
 
 	if ((flags & kSCNetworkReachabilityFlagsConnectionRequired) == 0)
 	{
 		/*
          If the target host is reachable and no connection is required then we'll assume (for now) that you're on Wi-Fi...
          */
-		returnValue = ReachableViaWiFi;
+		returnValue = TBNetworkStatusReachableViaWiFi;
 	}
 
 	if ((((flags & kSCNetworkReachabilityFlagsConnectionOnDemand ) != 0) ||
@@ -194,7 +194,7 @@ static void ReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkReach
             /*
              ... and no [user] intervention is needed...
              */
-            returnValue = ReachableViaWiFi;
+            returnValue = TBNetworkStatusReachableViaWiFi;
         }
     }
 
@@ -203,7 +203,7 @@ static void ReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkReach
 		/*
          ... but WWAN connections are OK if the calling application is using the CFNetwork APIs.
          */
-		returnValue = ReachableViaWWAN;
+		returnValue = TBNetworkStatusReachableViaWWAN;
 	}
     
 	return returnValue;
@@ -224,10 +224,10 @@ static void ReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkReach
 }
 
 
-- (NetworkStatus)currentReachabilityStatus
+- (TBNetworkStatus)currentReachabilityStatus
 {
 	NSAssert(_reachabilityRef != NULL, @"currentNetworkStatus called with NULL SCNetworkReachabilityRef");
-	NetworkStatus returnValue = NotReachable;
+	TBNetworkStatus returnValue = TBNetworkStatusNotReachable;
 	SCNetworkReachabilityFlags flags;
     
 	if (SCNetworkReachabilityGetFlags(_reachabilityRef, &flags))

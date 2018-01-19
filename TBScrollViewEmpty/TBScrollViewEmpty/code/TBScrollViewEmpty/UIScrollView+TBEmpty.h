@@ -8,22 +8,39 @@
 
 #import <UIKit/UIKit.h>
 
-@protocol TBEmptyDelegate<NSObject>
+@protocol TBSrollViewEmptyDelegate <NSObject>
 
 @optional
-- (UIView *)tb_emptyView;
-- (UIImage *)tb_emptyImage;
-- (NSString *)tb_emptyString;
-- (UIEdgeInsets)tb_emptyViewInset;
 
+// 是否显示emptyView
+- (BOOL)tb_showEmptyView:(UIScrollView *)scrollView;
+
+// 顶部的image
+- (UIImage *)tb_emptyImage:(UIScrollView *)scrollView;
+
+// 标题
+- (NSAttributedString *)tb_emptyTitle:(UIScrollView *)scrollView;
+
+// 详情
+- (NSAttributedString *)tb_emptyDetial:(UIScrollView *)scrollView;
+
+// 底部按钮标题
+- (NSAttributedString *)tb_emptyButtonTitle:(UIScrollView *)scrollView forState:(UIControlState)state;
+
+// 底部按钮image
+- (UIImage *)tb_emptyButtonImage:(UIScrollView *)scrollView forState:(UIControlState)state;
+
+// emptyView 偏移量
+- (UIEdgeInsets)tb_emptyViewInset:(UIScrollView *)scrollView;
+
+// 自定义的emptyView
+- (UIView *)tb_emptyView:(UIScrollView *)scrollView;
 
 @end
 
 @interface UIScrollView (TBEmpty)
 
-@property (nonatomic, assign)BOOL tb_showEmptyView;
-
-@property (nonatomic, assign)id<TBEmptyDelegate> tb_EmptyDelegate;
+@property (nonatomic, assign)id<TBSrollViewEmptyDelegate> tb_EmptyDelegate; // 代理
 
 @end
 

@@ -10,7 +10,7 @@
 #import "MJRefresh.h"
 #import "UIScrollView+TBEmpty.h"
 
-@interface TBCollectionViewController ()<UICollectionViewDelegate, UICollectionViewDataSource, TBEmptyDelegate>
+@interface TBCollectionViewController ()<UICollectionViewDelegate, UICollectionViewDataSource, TBSrollViewEmptyDelegate>
 @property (nonatomic, strong)NSMutableArray *dataSource;
 @property (nonatomic, weak)UICollectionView *collectionView;
 @end
@@ -29,7 +29,6 @@ static NSString * const reuseIdentifier = @"Cell";
     // 设置代理
     collectionView.delegate = self;
     collectionView.dataSource = self;
-    collectionView.tb_showEmptyView = YES;
     collectionView.tb_EmptyDelegate = self;
     
     // 兼容iOS11 表格
@@ -43,6 +42,13 @@ static NSString * const reuseIdentifier = @"Cell";
     [self.collectionView.mj_header beginRefreshing];
 }
 
+#pragma mark <TBSrollViewEmptyDelegate>
+- (BOOL)tb_showEmptyView {
+    return YES;
+}
+
+
+#pragma mark <UICollectionView>
 - (UICollectionView *)createCollectionView {
     UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
     layout.itemSize = CGSizeMake(self.view.frame.size.width, 100);

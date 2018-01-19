@@ -11,14 +11,15 @@
 
 @implementation NSObject (TBEmpty)
 
+/**
+ 交换实例方法
+
+ @param method1 目标函数
+ @param method2 源函数
+ */
 + (void)exchangeInstanceMethod1:(SEL)method1 method2:(SEL)method2
 {
     method_exchangeImplementations(class_getInstanceMethod(self, method1), class_getInstanceMethod(self, method2));
-}
-
-+ (void)exchangeClassMethod1:(SEL)method1 method2:(SEL)method2
-{
-    method_exchangeImplementations(class_getClassMethod(self, method1), class_getClassMethod(self, method2));
 }
 
 @end
@@ -26,31 +27,23 @@
 
 @implementation UIScrollView (TBEmpty)
 
-static const char TBShowEmptyViewStoreKey = '\0'; // 自定义显示提示View
-static const char TBSystemReload = '\0'; // 系统reloadData
-static const char TBEmptyView = '\0'; // 空View容器
-static const char TBEmptyDelegateKey = '\0'; // 自定义属性的代理
+static const char TBShowEmptyViewStoreKey = '\0'; // 是否显示emptyView的key
+static const char TBSystemReload = '\0'; // 系统布局tableView调用reloadData的key
+static const char TBEmptyView = '\0'; // emptyView的key
+static const char TBEmptyDelegateKey = '\0'; // 代理的key
+
+static const BOOL tb_GlobleShowEmptyView = YES; // 默认显示emptyView
 
 // 代理
-- (void)setTb_EmptyDelegate:(id<TBEmptyDelegate>)tb_EmptyDelegate {
+- (void)setTb_EmptyDelegate:(id<TBSrollViewEmptyDelegate>)tb_EmptyDelegate {
+    
     // 存储
     objc_setAssociatedObject(self, &TBEmptyDelegateKey,
                              tb_EmptyDelegate, OBJC_ASSOCIATION_ASSIGN);
 }
 
-- (id<TBEmptyDelegate>)tb_EmptyDelegate {
+- (id<TBSrollViewEmptyDelegate>)tb_EmptyDelegate {
     return objc_getAssociatedObject(self, &TBEmptyDelegateKey);
-}
-
-
-- (void)setTb_showEmptyView:(BOOL)tb_showEmptyView {
-    // 存储
-    objc_setAssociatedObject(self, &TBShowEmptyViewStoreKey,
-                             @(tb_showEmptyView), OBJC_ASSOCIATION_ASSIGN);
-}
-
-- (BOOL)tb_showEmptyView {
-    return objc_getAssociatedObject(self, &TBShowEmptyViewStoreKey);
 }
 
 - (void)createEmptyView {
@@ -61,13 +54,14 @@ static const char TBEmptyDelegateKey = '\0'; // 自定义属性的代理
     UIView *emptyView = nil;
     
     // 获取代理的View
-    if ([self.tb_EmptyDelegate respondsToSelector:@selector(tb_emptyView)]) {
-        emptyView = [self.tb_EmptyDelegate tb_emptyView];
+    if ([self.tb_EmptyDelegate respondsToSelector:@selector(tb_emptyView:)]) {
+        emptyView = [self.tb_EmptyDelegate tb_emptyView:self];
         
         // 没有设置frame
         if (CGRectIsEmpty(emptyView.frame) || CGRectIsEmpty(emptyView.frame)) {
             emptyView.frame = rect;
         }
+
         
     }else {// 系统默认的
         emptyView = [[UIView alloc] initWithFrame:rect];
@@ -78,8 +72,8 @@ static const char TBEmptyDelegateKey = '\0'; // 自定义属性的代理
         imageView.clipsToBounds = YES;
         
         // 获取自定义的图片
-        if ([self.tb_EmptyDelegate respondsToSelector:@selector(tb_emptyImage)]) {
-            imageView.image = self.tb_EmptyDelegate.tb_emptyImage;
+        if ([self.tb_EmptyDelegate respondsToSelector:@selector(tb_emptyImage:)]) {
+            imageView.image = [self.tb_EmptyDelegate tb_emptyImage:self];
         }else {
             imageView.image = [UIImage imageNamed:@"data_empty"];
         }
@@ -94,8 +88,8 @@ static const char TBEmptyDelegateKey = '\0'; // 自定义属性的代理
         [emptyView addSubview:tipLabel];
         
         // 设置提示文字
-        if ([self.tb_EmptyDelegate respondsToSelector:@selector(tb_emptyString)]) {
-            tipLabel.text = self.tb_EmptyDelegate.tb_emptyString;
+        if ([self.tb_EmptyDelegate respondsToSelector:@selector(tb_emptyTitle:)]) {
+            tipLabel.attributedText = [self.tb_EmptyDelegate tb_emptyTitle:self];
         }else {
             tipLabel.text = @"暂时无数据";
         }
@@ -108,8 +102,8 @@ static const char TBEmptyDelegateKey = '\0'; // 自定义属性的代理
     [self bringSubviewToFront:emptyView];
     
     // 设置偏移量
-    if ([self.tb_EmptyDelegate respondsToSelector:@selector(tb_emptyViewInset)]) {
-        UIEdgeInsets inset = [self.tb_EmptyDelegate tb_emptyViewInset];
+    if ([self.tb_EmptyDelegate respondsToSelector:@selector(tb_emptyViewInset:)]) {
+        UIEdgeInsets inset = [self.tb_EmptyDelegate tb_emptyViewInset:self];
         CGRect newRect = CGRectMake(emptyView.frame.origin.x - inset.left, emptyView.frame.origin.y - inset.top, emptyView.frame.size.width - inset.right, emptyView.frame.size.height - inset.bottom);
         emptyView.frame = newRect;
     }
@@ -126,7 +120,20 @@ static const char TBEmptyDelegateKey = '\0'; // 自定义属性的代理
         return;
     }
     
-    if (![self tb_showEmptyView]) return;
+    // 是否启动emptyView
+    if ([self.tb_EmptyDelegate respondsToSelector:@selector(tb_showEmptyView:)]) {
+        
+        BOOL showEmptyView = [self.tb_EmptyDelegate tb_showEmptyView:self];
+        
+        // 存储
+        objc_setAssociatedObject(self, &TBShowEmptyViewStoreKey,
+                                 @(showEmptyView), OBJC_ASSOCIATION_ASSIGN);
+        if (!showEmptyView) {
+            return;
+        }
+    } else if (!tb_GlobleShowEmptyView) {
+        return;
+    };
     
     UIView *emptyView = objc_getAssociatedObject(self, &TBEmptyView);
     

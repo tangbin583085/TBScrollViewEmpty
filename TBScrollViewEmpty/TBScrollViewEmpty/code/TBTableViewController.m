@@ -9,13 +9,13 @@
 #import "TBTableViewController.h"
 #import "MJRefresh.h"
 #import "UIScrollView+TBEmpty.h"
-#import "Reachability.h"
+#import "TBNetworkReachability.h"
 
-@interface TBTableViewController ()<TBEmptyDelegate>
+@interface TBTableViewController ()<TBSrollViewEmptyDelegate>
 
 @property (nonatomic, strong)NSMutableArray *dataSource;
 
-@property (nonatomic) Reachability *internetReachability;
+@property (nonatomic) TBNetworkReachability *internetReachability;
 
 @end
 
@@ -24,7 +24,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.internetReachability = [Reachability reachabilityForInternetConnection];
+    self.internetReachability = [TBNetworkReachability reachabilityForInternetConnection];
     [self.internetReachability startNotifier];
     [self networkdStatus:self.internetReachability];
     
@@ -45,23 +45,27 @@
     [self.tableView.mj_header beginRefreshing];
     
     // 设置代理
-    self.tableView.tb_showEmptyView = YES;
     self.tableView.tb_EmptyDelegate = self;
 }
 
+#pragma mark <TBSrollViewEmptyDelegate>
+- (BOOL)tb_showEmptyView {
+    return NO;
+}
+
 #pragma mark <网络状态>
-- (NetworkStatus)networkdStatus:(Reachability *)reachability {
-    NetworkStatus netStatus = [reachability currentReachabilityStatus];
+- (TBNetworkStatus)networkdStatus:(TBNetworkReachability *)reachability {
+    TBNetworkStatus netStatus = [reachability currentReachabilityStatus];
     switch (netStatus)
     {
-        case NotReachable:
+        case TBNetworkStatusNotReachable:
             NSLog(@"无网络");
             break;
-        case ReachableViaWWAN:        {
+        case TBNetworkStatusReachableViaWWAN:        {
             NSLog(@"Reachable WWAN");
             break;
         }
-        case ReachableViaWiFi:        {
+        case TBNetworkStatusReachableViaWiFi:        {
             NSLog(@"WIFI");
             break;
         }
@@ -70,7 +74,7 @@
 }
 
 
-#pragma mark <TBEmptyDelegate>
+#pragma mark <TBSrollViewEmptyDelegate>
 //- (UIView *)tb_emptyView {
 //    UIView *myView = [[UIView alloc] init];
 //    myView.backgroundColor = [UIColor orangeColor];
