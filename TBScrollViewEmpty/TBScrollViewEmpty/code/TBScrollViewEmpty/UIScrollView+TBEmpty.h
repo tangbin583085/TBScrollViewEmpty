@@ -33,7 +33,7 @@
 - (void)tb_emptyButtonClick:(UIButton *)btn network:(TBNetworkStatus)status;
 
 // emptyView 偏移量
-- (UIEdgeInsets)tb_emptyViewInset:(UIScrollView *)scrollView network:(TBNetworkStatus)status;
+- (CGPoint)tb_emptyViewOffset:(UIScrollView *)scrollView network:(TBNetworkStatus)status;
 
 // 自定义的emptyView
 - (UIView *)tb_emptyView:(UIScrollView *)scrollView network:(TBNetworkStatus)status;

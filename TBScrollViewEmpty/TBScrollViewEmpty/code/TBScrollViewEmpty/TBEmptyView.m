@@ -22,9 +22,6 @@
 
 #define titleForBtn @"重试"
 
-#define padding 40 // 左边边距
-#define paddingTop 20 // 上下边距
-
 #define titleColor [UIColor colorWithRed:90 / 255.0 green:90 / 255.0 blue:90 / 255.0 alpha:1.0]
 
 #define detailColor [UIColor colorWithRed:90 / 255.0 green:90 / 255.0 blue:90 / 255.0 alpha:1.0]
@@ -49,13 +46,24 @@
 
 @property (nonatomic, assign)CGFloat totalHeight;
 
+@property (nonatomic, assign)CGFloat padding; // 左边边距
+
+@property (nonatomic, assign)CGFloat paddingTop; // 上下边距
+
 @end
 
 @implementation TBEmptyView
 
+- (instancetype)initWithFrame:(CGRect)frame {
+    if (self = [super initWithFrame:frame]) {
+        self.padding = frame.size.width * 0.1;
+        self.paddingTop = frame.size.width * 0.05;
+    }
+    return self;
+}
+
 - (void)setTotalHeight:(CGFloat)totalHeight {
     _totalHeight = totalHeight;
-    
     // 调整高度和Y
     CGRect frameTemp = self.frame;
     frameTemp.size.height = totalHeight;
@@ -155,10 +163,10 @@
     NSRange range = NSMakeRange(0, tempString.string.length);
     NSDictionary *dic = [tempString attributesAtIndex:0 effectiveRange:&range];
     // 计算文字的高度
-    CGFloat maxWidth = CGRectGetWidth(self.frame) - 2 * padding;
+    CGFloat maxWidth = CGRectGetWidth(self.frame) - 2 * self.padding;
     CGFloat stringHeight = [tempString.string boundingRectWithSize:CGSizeMake(maxWidth, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:dic context:nil].size.height + 0.5;
     
-    CGRect frame = CGRectMake(padding, self.totalHeight + paddingTop, maxWidth, stringHeight);
+    CGRect frame = CGRectMake(self.padding, self.totalHeight + self.paddingTop, maxWidth, stringHeight);
     self.titleLB.frame = frame;
     
     // 更新总高度
@@ -174,10 +182,10 @@
     NSRange range = NSMakeRange(0, stringTemp.string.length);
     NSDictionary *dic = [stringTemp attributesAtIndex:0 effectiveRange:&range];
     // 计算文字的高度
-    CGFloat maxWidth = CGRectGetWidth(self.frame) - 2 * padding;
+    CGFloat maxWidth = CGRectGetWidth(self.frame) - 2 * self.padding;
     CGFloat stringHeight = [stringTemp.string boundingRectWithSize:CGSizeMake(maxWidth, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:dic context:nil].size.height + 0.5;
     
-    CGRect frame = CGRectMake(padding, self.totalHeight + paddingTop, maxWidth, stringHeight);
+    CGRect frame = CGRectMake(self.padding, self.totalHeight + self.paddingTop, maxWidth, stringHeight);
     self.detailLB.frame = frame;
     
     // 更新总高度
@@ -192,8 +200,8 @@
         [self.button setAttributedTitle:titleAttrString forState:UIControlStateNormal];
     }
     
-    CGFloat maxWidth = CGRectGetWidth(self.frame) - 4 * padding;
-    CGRect frame = CGRectMake(padding * 2, self.totalHeight + paddingTop * 0.5, maxWidth, self.button.titleLabel.font.pointSize + padding);
+    CGFloat maxWidth = CGRectGetWidth(self.frame) - 4 * self.padding;
+    CGRect frame = CGRectMake(self.padding * 2, self.totalHeight + self.paddingTop * 0.5, maxWidth, self.button.titleLabel.font.pointSize + self.padding);
     self.button.frame = frame;
     
     // 更新总高度

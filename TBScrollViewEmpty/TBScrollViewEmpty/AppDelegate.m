@@ -9,6 +9,8 @@
 #import "AppDelegate.h"
 #import "TBTableViewController.h"
 #import "TBMainVC.h"
+#import "TBTableViewController.h"
+#import "TBCollectionViewController.h"
 
 @interface AppDelegate ()
 
@@ -19,7 +21,15 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     UIWindow *window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
-    window.rootViewController = [[TBMainVC alloc] init];
+    
+    
+    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:[[TBTableViewController alloc] init]];
+    
+    UINavigationController *nav2 = [[UINavigationController alloc] initWithRootViewController:[[TBCollectionViewController alloc] init]];
+    
+    UITabBarController *barVC = [[UITabBarController alloc] init];
+    barVC.viewControllers = @[nav, nav2];
+    window.rootViewController = barVC;
     [window makeKeyAndVisible];
     self.window = window;
     return YES;

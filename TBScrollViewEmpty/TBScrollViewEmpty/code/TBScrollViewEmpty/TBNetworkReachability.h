@@ -13,8 +13,8 @@
 
 typedef enum : NSInteger {
 	TBNetworkStatusNotReachable = 0,
-	TBNetworkStatusReachableViaWiFi,
-	TBNetworkStatusReachableViaWWAN
+	TBNetworkStatusReachableViaWWAN,
+    TBNetworkStatusReachableViaWiFi,
 } TBNetworkStatus;
 
 #pragma mark IPv6 Support

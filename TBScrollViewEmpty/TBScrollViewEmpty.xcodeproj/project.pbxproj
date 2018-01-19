@@ -186,9 +186,9 @@
 			isa = PBXGroup;
 			children = (
 				513CD5282011E1D300E3641B /* image */,
+				513CD5182010461900E3641B /* TBScrollViewEmpty.h */,
 				513CD5252010A58000E3641B /* TBNetworkReachability.h */,
 				513CD5262010A58000E3641B /* TBNetworkReachability.m */,
-				513CD5182010461900E3641B /* TBScrollViewEmpty.h */,
 				513CD51E201087DB00E3641B /* TBEmptyView.h */,
 				513CD51F201087DB00E3641B /* TBEmptyView.m */,
 				51BF7DEA1FB007570040BE9D /* UIScrollView+TBEmpty.h */,

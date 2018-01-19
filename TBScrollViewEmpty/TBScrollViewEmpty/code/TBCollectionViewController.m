@@ -8,7 +8,7 @@
 
 #import "TBCollectionViewController.h"
 #import "MJRefresh.h"
-#import "UIScrollView+TBEmpty.h"
+#import "TBScrollViewEmpty.h"
 
 @interface TBCollectionViewController ()<UICollectionViewDelegate, UICollectionViewDataSource, TBSrollViewEmptyDelegate>
 @property (nonatomic, strong)NSMutableArray *dataSource;
@@ -111,7 +111,9 @@ static NSString * const reuseIdentifier = @"Cell";
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    [self dismissViewControllerAnimated:YES completion:nil];
+    
+    TBCollectionViewController *vc = [[TBCollectionViewController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)loadNewData {

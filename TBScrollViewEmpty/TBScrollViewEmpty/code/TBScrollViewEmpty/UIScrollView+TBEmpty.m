@@ -42,7 +42,7 @@ static const BOOL tb_isShowTitleLB = YES; // 显示标题
 
 static const BOOL tb_isShowDetailLB = YES; // 显示详情
 
-static const BOOL tb_isShowButton = YES; // 显示按钮
+static const BOOL tb_isShowButton = NO; // 显示按钮
 
 - (TBNetworkReachability *)internetReachability {
     
@@ -143,9 +143,9 @@ static const BOOL tb_isShowButton = YES; // 显示按钮
                              emptyView, OBJC_ASSOCIATION_ASSIGN);
     
     // 设置偏移量
-    if ([self.tb_EmptyDelegate respondsToSelector:@selector(tb_emptyViewInset:network:)]) {
-        UIEdgeInsets inset = [self.tb_EmptyDelegate tb_emptyViewInset:self network:[self networkdStatus]];
-        CGRect newRect = CGRectMake(emptyView.frame.origin.x - inset.left, emptyView.frame.origin.y - inset.top, emptyView.frame.size.width - inset.right, emptyView.frame.size.height - inset.bottom);
+    if ([self.tb_EmptyDelegate respondsToSelector:@selector(tb_emptyViewOffset:network:)]) {
+        CGPoint point = [self.tb_EmptyDelegate tb_emptyViewOffset:self network:[self networkdStatus]];
+        CGRect newRect = CGRectMake(emptyView.frame.origin.x + point.x, emptyView.frame.origin.y + point.y, emptyView.frame.size.width, emptyView.frame.size.height);
         emptyView.frame = newRect;
     }
     

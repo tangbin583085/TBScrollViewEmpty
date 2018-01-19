@@ -8,8 +8,8 @@
 
 #import "TBTableViewController.h"
 #import "MJRefresh.h"
-#import "UIScrollView+TBEmpty.h"
 #import "TBScrollViewEmpty.h"
+#import "TBCollectionViewController.h"
 
 @interface TBTableViewController ()<TBSrollViewEmptyDelegate>
 
@@ -23,10 +23,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    self.internetReachability = [TBNetworkReachability reachabilityForInternetConnection];
-    [self.internetReachability startNotifier];
-    [self networkdStatus:self.internetReachability];
     
     self.dataSource = [NSMutableArray array];
     
@@ -45,55 +41,97 @@
     [self.tableView.mj_header beginRefreshing];
     
     // 设置代理
-    self.tableView.tb_EmptyDelegate = self;
+//    self.tableView.tb_EmptyDelegate = self;
 }
 
 #pragma mark <TBSrollViewEmptyDelegate>
-- (BOOL)tb_showEmptyView {
-    return NO;
-}
-
-#pragma mark <网络状态>
-- (TBNetworkStatus)networkdStatus:(TBNetworkReachability *)reachability {
-    TBNetworkStatus netStatus = [reachability currentReachabilityStatus];
-    switch (netStatus)
-    {
-        case TBNetworkStatusNotReachable:
-            NSLog(@"无网络");
-            break;
-        case TBNetworkStatusReachableViaWWAN:        {
-            NSLog(@"Reachable WWAN");
-            break;
-        }
-        case TBNetworkStatusReachableViaWiFi:        {
-            NSLog(@"WIFI");
-            break;
-        }
-    }
-    return netStatus;
-}
-
-
-#pragma mark <TBSrollViewEmptyDelegate>
-//- (UIView *)tb_emptyView {
+//- (BOOL)tb_showEmptyView:(UIScrollView *)scrollView network:(TBNetworkStatus)status {
+//    return YES;
+//}
+//
+//- (UIImage *)tb_emptyImage:(UIScrollView *)scrollView network:(TBNetworkStatus)status {
+//    if (status == TBNetworkStatusNotReachable) {
+//        return [UIImage imageNamed:@"network"];
+//    } else if (status == TBNetworkStatusReachableViaWWAN) {
+//        return [UIImage imageNamed:@"car"];
+//    } else {
+//        return [UIImage imageNamed:@"goods"];
+//    }
+//}
+//
+//- (NSAttributedString *)tb_emptyTitle:(UIScrollView *)scrollView network:(TBNetworkStatus)status {
+//
+//    if (status == TBNetworkStatusNotReachable) {
+//        NSMutableAttributedString *attrString = [[NSMutableAttributedString alloc] initWithString:@"网路异常"];
+//        [attrString addAttribute:NSForegroundColorAttributeName value:[UIColor redColor] range:NSMakeRange(0, attrString.string.length)];
+//        [attrString addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:30.0] range:NSMakeRange(0, attrString.string.length)];
+//        return attrString;
+//    } else if (status == TBNetworkStatusReachableViaWWAN) {
+//        NSMutableAttributedString *attrString = [[NSMutableAttributedString alloc] initWithString:@"4G网路"];
+//        [attrString addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:15.0] range:NSMakeRange(0, attrString.string.length)];
+//        [attrString addAttribute:NSForegroundColorAttributeName value:[UIColor redColor] range:NSMakeRange(0, attrString.string.length)];
+//        return attrString;
+//    } else {
+//        NSMutableAttributedString *attrString = [[NSMutableAttributedString alloc] initWithString:@"WIFI网络"];
+//        [attrString addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:18.0] range:NSMakeRange(0, attrString.string.length)];
+//        [attrString addAttribute:NSForegroundColorAttributeName value:[UIColor redColor] range:NSMakeRange(0, attrString.string.length)];
+//        return attrString;
+//    }
+//}
+//
+//// 详情
+//- (NSAttributedString *)tb_emptyDetial:(UIScrollView *)scrollView network:(TBNetworkStatus)status {
+//
+//    if (status == TBNetworkStatusNotReachable) {
+//        NSMutableAttributedString *attrString = [[NSMutableAttributedString alloc] initWithString:@"网路异常123456789网路异常123456789网路异常123456789网路异常123456789网路异常123456789网路异常123456789网路异常123456789网路异常123456789网路异常123456789"];
+//        [attrString addAttribute:NSForegroundColorAttributeName value:[UIColor redColor] range:NSMakeRange(0, attrString.string.length)];
+//        [attrString addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:30.0] range:NSMakeRange(0, attrString.string.length)];
+//        return attrString;
+//    } else if (status == TBNetworkStatusReachableViaWWAN) {
+//        NSMutableAttributedString *attrString = [[NSMutableAttributedString alloc] initWithString:@"4G网路123456789 4G网路123456789 4G网路123456789 4G网路123456789 4G网路123456789 4G网路123456789"];
+//        return attrString;
+//    } else {
+//        NSMutableAttributedString *attrString = [[NSMutableAttributedString alloc] initWithString:@"WIFI网络123456789WIFI网络123456789WIFI网络123456789WIFI网络123456789WIFI网络123456789WIFI网络123456789WIFI网络123456789WIFI网络123456789WIFI网络123456789"];
+//        [attrString addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:18.0] range:NSMakeRange(0, attrString.string.length)];
+//        [attrString addAttribute:NSForegroundColorAttributeName value:[UIColor redColor] range:NSMakeRange(0, attrString.string.length)];
+//        return attrString;
+//    }
+//}
+//
+//- (NSAttributedString *)tb_emptyButtonTitle:(UIScrollView *)scrollView network:(TBNetworkStatus)status {
+//
+//    if (status == TBNetworkStatusNotReachable) {
+//        NSMutableAttributedString *attrString = [[NSMutableAttributedString alloc] initWithString:@"网路异常123"];
+//        [attrString addAttribute:NSForegroundColorAttributeName value:[UIColor greenColor] range:NSMakeRange(0, attrString.string.length)];
+//        [attrString addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:30.0] range:NSMakeRange(0, attrString.string.length)];
+//        return attrString;
+//    } else if (status == TBNetworkStatusReachableViaWWAN) {
+//        NSMutableAttributedString *attrString = [[NSMutableAttributedString alloc] initWithString:@"4G网路123"];
+//        return attrString;
+//    } else {
+//        NSMutableAttributedString *attrString = [[NSMutableAttributedString alloc] initWithString:@"WIFI网络123"];
+//        [attrString addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:18.0] range:NSMakeRange(0, attrString.string.length)];
+//        [attrString addAttribute:NSForegroundColorAttributeName value:[UIColor purpleColor] range:NSMakeRange(0, attrString.string.length)];
+//        return attrString;
+//    }
+//}
+//
+//- (void)tb_emptyButtonClick:(UIButton *)btn network:(TBNetworkStatus)status {
+//
+//    NSLog(@"%s  %@", __func__, btn);
+//    [self loadNewData];
+//}
+//
+//
+//- (CGPoint)tb_emptyViewOffset:(UIScrollView *)scrollView network:(TBNetworkStatus)status {
+//    return CGPointMake(0, 0);
+//}
+//
+//- (UIView *)tb_emptyView:(UIScrollView *)scrollView network:(TBNetworkStatus)status {
 //    UIView *myView = [[UIView alloc] init];
 //    myView.backgroundColor = [UIColor orangeColor];
-////    myView.frame = CGRectMake(100, 100, 100, 100);
-//    [self.view addSubview:myView];
+//    myView.frame = CGRectMake(100, 100, 100, 100);
 //    return myView;
-//}
-
-//- (UIEdgeInsets)tb_emptyViewInset {
-//    return UIEdgeInsetsMake(200, 0, 50, 0);
-//}
-
-//- (UIImage *)tb_emptyImage {
-//    return [UIImage imageNamed:@"otherImage"];
-//}
-
-
-//- (NSString *)tb_emptyString {
-//    return @"查询不到你所需的数据";
 //}
 
 
@@ -103,7 +141,11 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    [self dismissViewControllerAnimated:YES completion:nil];
+    
+    TBCollectionViewController *VC = [[TBCollectionViewController alloc] init];
+    [self.navigationController pushViewController:VC animated:YES];
+//    [self presentViewController:VC animated:YES completion:nil];
+//    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -117,17 +159,17 @@
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         
-        static BOOL emptyTemp = NO;
+        BOOL emptyTemp = arc4random() % 2 == 0;
         [self.dataSource removeAllObjects];
         
-//        if (emptyTemp) {
-////            for (int i = 0; i < 20; i++) {
-////                [self.dataSource addObject:[NSString stringWithFormat:@"我是第%d个", i]];
-////            }
-//            emptyTemp = NO;
-//        }else {
-//            emptyTemp = YES;
-//        }
+        if (emptyTemp) {
+            for (int i = 0; i < 20; i++) {
+                [self.dataSource addObject:[NSString stringWithFormat:@"我是第%d个", i]];
+            }
+            emptyTemp = NO;
+        }else {
+            emptyTemp = YES;
+        }
         
         [self.tableView.mj_header endRefreshing];
         [self.tableView reloadData];
