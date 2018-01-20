@@ -55,6 +55,11 @@
 }
 
 #pragma mark - TBSrollViewEmptyDelegate
+
+- (UIImage *)tb_emptyImage:(UIScrollView *)scrollView network:(TBNetworkStatus)status {
+    return [UIImage imageNamed:@"goods"];
+}
+
 - (NSAttributedString *)tb_emptyTitle:(UIScrollView *)scrollView network:(TBNetworkStatus)status {
     
     // 隐藏

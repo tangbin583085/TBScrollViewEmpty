@@ -46,6 +46,10 @@ static NSString * const reuseIdentifier = @"Cell";
 }
 
 #pragma mark <TBSrollViewEmptyDelegate>
+- (UIImage *)tb_emptyImage:(UIScrollView *)scrollView network:(TBNetworkStatus)status {
+    return [UIImage imageNamed:@"money"];
+}
+
 - (void)tb_emptyButtonClick:(UIButton *)btn network:(TBNetworkStatus)status {
     [self loadNewData];
 }
