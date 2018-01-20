@@ -79,7 +79,7 @@ Pod::Spec.new do |s|
   #  Supports git, hg, bzr, svn and HTTP.
   #
 
-  s.source       = { :git => "http://EXAMPLE/TBScrollViewEmpty.git", :tag => "#{s.version}" }
+  s.source       = { :git => "https://github.com/tangbin583085/TBScrollViewEmpty/tree/master/TBScrollViewEmpty/TBScrollViewEmpty/code/TBScrollViewEmpty", :tag => "#{s.version}" }
 
 
   # ――― Source Code ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
