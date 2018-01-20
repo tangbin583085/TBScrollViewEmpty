@@ -42,7 +42,7 @@ static const BOOL tb_isShowTitleLB = YES; // 显示标题
 
 static const BOOL tb_isShowDetailLB = YES; // 显示详情
 
-static const BOOL tb_isShowButton = YES; // 显示按钮
+static const BOOL tb_isShowButton = NO; // 显示按钮
 
 - (TBNetworkReachability *)internetReachability {
     
@@ -112,6 +112,8 @@ static const BOOL tb_isShowButton = YES; // 显示按钮
             NSAttributedString *attributedText = [self.tb_EmptyDelegate tb_emptyTitle:self  network:[self networkdStatus]];
             if (attributedText) {
                 [tbEmptyView setTitltString:attributedText network:[self networkdStatus] isShow:YES];
+            } else if ([attributedText.string isEqualToString:@""]) {
+                [tbEmptyView setTitltString:nil network:[self networkdStatus] isShow:YES];
             }
         }else {
             [tbEmptyView setTitltString:nil network:[self networkdStatus] isShow:tb_isShowTitleLB];
@@ -122,6 +124,8 @@ static const BOOL tb_isShowButton = YES; // 显示按钮
             NSAttributedString *attributedText = [self.tb_EmptyDelegate tb_emptyDetial:self network:[self networkdStatus]];
             if (attributedText) {
                 [tbEmptyView setDetailString:attributedText network:[self networkdStatus] isShow:YES];
+            }else if ([attributedText.string isEqualToString:@""]) {
+                [tbEmptyView setDetailString:nil network:[self networkdStatus] isShow:YES];
             }
         }else {
             [tbEmptyView setDetailString:nil network:[self networkdStatus] isShow:tb_isShowDetailLB];
@@ -132,6 +136,8 @@ static const BOOL tb_isShowButton = YES; // 显示按钮
             NSAttributedString *attributedText = [self.tb_EmptyDelegate tb_emptyButtonTitle:self network:[self networkdStatus]];
             if (attributedText) {
                 [tbEmptyView setButonTitle:attributedText network:[self networkdStatus] isShow:YES];
+            }else if ([attributedText.string isEqualToString:@""]) {
+                [tbEmptyView setButonTitle:nil network:[self networkdStatus] isShow:YES];
             }
         }else {
             [tbEmptyView setButonTitle:nil network:[self networkdStatus] isShow:tb_isShowButton];
@@ -218,7 +224,6 @@ static const BOOL tb_isShowButton = YES; // 显示按钮
 #pragma mark <TBEmptyViewDelegate>
 -(void)btnClick:(UIButton *)btn {
     
-    NSLog(@"222");
     if ([self.tb_EmptyDelegate respondsToSelector:@selector(tb_emptyButtonClick:network:)]) {
         [self.tb_EmptyDelegate tb_emptyButtonClick:btn network:[self networkdStatus]];
     }
@@ -230,14 +235,11 @@ static const BOOL tb_isShowButton = YES; // 显示按钮
     switch (netStatus)
     {
         case TBNetworkStatusNotReachable:
-            NSLog(@"无网络");
             break;
         case TBNetworkStatusReachableViaWWAN:        {
-            NSLog(@"Reachable WWAN");
             break;
         }
         case TBNetworkStatusReachableViaWiFi:        {
-            NSLog(@"WIFI");
             break;
         }
     }

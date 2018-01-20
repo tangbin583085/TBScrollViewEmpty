@@ -67,7 +67,7 @@
     // 调整高度和Y
     CGRect frameTemp = self.frame;
     frameTemp.size.height = totalHeight;
-    frameTemp.origin.y = (CGRectGetHeight(self.superview.frame) - totalHeight ) * 0.45;
+    frameTemp.origin.y = (CGRectGetHeight(self.superview.frame) - totalHeight ) * 0.35;
     self.frame = frameTemp;
 }
 
@@ -124,21 +124,16 @@
     
     // 转圈圈
     if (self.imageViewTop.image) {
-        self.imageViewTop.contentMode = UIViewContentModeCenter;
-        self.imageViewTop.image = [UIImage imageNamed:@"loading_imgBlue"];
-        CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"transform"];
-        animation.fromValue = [NSValue valueWithCATransform3D:CATransform3DIdentity];
-        animation.toValue = [NSValue valueWithCATransform3D: CATransform3DMakeRotation(M_PI_2, 0.0, 0.0, 1.0) ];
-        animation.duration = 0.25;
-        animation.cumulative = YES;
-        animation.repeatCount = MAXFLOAT;
-        [self.imageViewTop.layer addAnimation:animation forKey:@"transform"];
+        UIActivityIndicatorView *loadingView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        [loadingView startAnimating];
+        loadingView.center = self.imageViewTop.center;
+        self.imageViewTop.hidden = YES;
+        [self addSubview:loadingView];
     }
     
     if ([self.delegate respondsToSelector:@selector(btnClick:)]) {
         [self.delegate btnClick:btn];
     }
-    NSLog(@"1111");
 }
 
 - (void)setImageView:(UIImage *)image network:(TBNetworkStatus)status isShow:(BOOL)show {
