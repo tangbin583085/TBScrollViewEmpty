@@ -11,7 +11,7 @@ TBScrollViewEmpty
 
 What
 ==============
-Typically we use list component (UITableView or UICollectionView) to show content. However, those components may display blank when the data is empty, specially for new users with accounts, the network is not reachable or something wrong with our app. To let the users konw what is going on when the blank comes out, it’s necessary for empty states to be dealt with by developers as blank pages often caused by exceptions.
+Typically we use list component (UITableView or UICollectionView) to show App content. However, these components may display blank when the data is empty, specially for new users with accounts, the network is not reachable or something wrong with our app. To let the users konw what is going on when the blank page comes out, it’s necessary for empty states to be dealt with by developers as blank pages often caused by exceptions.
 
 Installation
 ==============
@@ -21,7 +21,7 @@ Installation
 
 Feature
 ==============
-- **Automatic**: Automatically add or move the tip view.
+- **Automatic**: Automatically add or remove the tip view.
 - **Structure**: This framework allows you customized development easily.
 - **Network**: `Monitor the status of network.`
 - **NSAttributedString**: Uses NSAttributedString for easier appearance customisation.
@@ -32,9 +32,8 @@ Demo
 
 How to use
 ==============
-- All you need to do is `Import \<TBScrollViewEmpty.h\>.` ， then this framework will provide standard emptyView automatically when the data is empty.
-- You don't need  to conform to datasource and/or delegate, unless you want to  customize development.
-- For more detail, please download and check the demo source from Github.（[ TBScrollViewEmpty](https://github.com/tangbin583085/TBScrollViewEmpty)）
+- `Import \<TBScrollViewEmpty.h\>.` ， then this framework will show standard emptyView automatically when the data is empty.
+- You don't even need  to conform to delegate, unless you want to  customize development.
 
 License
 ==============
@@ -55,7 +54,7 @@ Github and Source
 
 简介
 ==============
-我们往往会使用列表组件(UITableView or UICollectionView) 来展示App内容。但是，这些组件在数据为空的时候有可能会出现空白页，特别当新账号用户，网络异常或者App出现bug。为了让用户清楚了解空白页的情况，开发者很有必要对那些常由异常造成的空白页，给出温馨提示和引导视图。
+我们往往会使用列表组件(UITableView or UICollectionView) 来展示App内容。但是，这些组件在数据为空的时候有可能会出现空白页，特别当新账号用户，网络异常或者App出现bug。为了让用户清楚了解空白页的原因，开发者很有必要对那些常由异常造成的空白页，给出温馨提示和引导视图。
 
 安装
 ==============
@@ -76,9 +75,8 @@ Demo
 
 如何用
 ==============
-- 你只需要将本框架导入你的工程，框架会在数据为空的时候自动帮添加或者移除提示视图。
+- `Import \<TBScrollViewEmpty.h\>`，框架会在数据为空的时候自动帮你添加或者移除提示视图。
 - 你无须遵循本框架的代理，除非你需要自定义视图开发。
-- 更多设置方法，请下载查看demo源码（[ TBScrollViewEmpty](https://github.com/tangbin583085/TBScrollViewEmpty)）
 
 
 授权
