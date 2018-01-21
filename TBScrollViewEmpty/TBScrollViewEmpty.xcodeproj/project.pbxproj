@@ -9,8 +9,8 @@
 /* Begin PBXBuildFile section */
 		513CD520201087DB00E3641B /* TBEmptyView.m in Sources */ = {isa = PBXBuildFile; fileRef = 513CD51F201087DB00E3641B /* TBEmptyView.m */; };
 		513CD5272010A58000E3641B /* TBNetworkReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 513CD5262010A58000E3641B /* TBNetworkReachability.m */; };
-		513CD5332011E1D300E3641B /* network@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 513CD52A2011E1D300E3641B /* network@2x.png */; };
-		513CD53A2011E1D300E3641B /* star@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 513CD5312011E1D300E3641B /* star@2x.png */; };
+		513CD5332011E1D300E3641B /* tb_network@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 513CD52A2011E1D300E3641B /* tb_network@2x.png */; };
+		513CD53A2011E1D300E3641B /* tb_star@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 513CD5312011E1D300E3641B /* tb_star@2x.png */; };
 		51BF7DB51FB007330040BE9D /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 51BF7DB41FB007330040BE9D /* AppDelegate.m */; };
 		51BF7DBD1FB007330040BE9D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 51BF7DBC1FB007330040BE9D /* Assets.xcassets */; };
 		51BF7DC01FB007330040BE9D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 51BF7DBE1FB007330040BE9D /* LaunchScreen.storyboard */; };
@@ -79,8 +79,8 @@
 		513CD51F201087DB00E3641B /* TBEmptyView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TBEmptyView.m; sourceTree = "<group>"; };
 		513CD5252010A58000E3641B /* TBNetworkReachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TBNetworkReachability.h; sourceTree = "<group>"; };
 		513CD5262010A58000E3641B /* TBNetworkReachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TBNetworkReachability.m; sourceTree = "<group>"; };
-		513CD52A2011E1D300E3641B /* network@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "network@2x.png"; sourceTree = "<group>"; };
-		513CD5312011E1D300E3641B /* star@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "star@2x.png"; sourceTree = "<group>"; };
+		513CD52A2011E1D300E3641B /* tb_network@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tb_network@2x.png"; sourceTree = "<group>"; };
+		513CD5312011E1D300E3641B /* tb_star@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tb_star@2x.png"; sourceTree = "<group>"; };
 		51BF7DB01FB007330040BE9D /* TBScrollViewEmpty.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TBScrollViewEmpty.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		51BF7DB31FB007330040BE9D /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		51BF7DB41FB007330040BE9D /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -203,8 +203,8 @@
 		513CD5282011E1D300E3641B /* image */ = {
 			isa = PBXGroup;
 			children = (
-				513CD52A2011E1D300E3641B /* network@2x.png */,
-				513CD5312011E1D300E3641B /* star@2x.png */,
+				513CD52A2011E1D300E3641B /* tb_network@2x.png */,
+				513CD5312011E1D300E3641B /* tb_star@2x.png */,
 			);
 			path = image;
 			sourceTree = "<group>";
@@ -517,13 +517,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				513CD53A2011E1D300E3641B /* star@2x.png in Resources */,
+				513CD53A2011E1D300E3641B /* tb_star@2x.png in Resources */,
 				51BF7E211FB007BA0040BE9D /* LICENSE in Resources */,
 				51BF7DC01FB007330040BE9D /* LaunchScreen.storyboard in Resources */,
 				67B97C912013540A00F60E12 /* goods@2x.png in Resources */,
 				67B97C922013540A00F60E12 /* order@2x.png in Resources */,
 				51BF7E361FB007BA0040BE9D /* README.md in Resources */,
-				513CD5332011E1D300E3641B /* network@2x.png in Resources */,
+				513CD5332011E1D300E3641B /* tb_network@2x.png in Resources */,
 				67B97C8D2013540A00F60E12 /* record@2x.png in Resources */,
 				67B97C932013540A00F60E12 /* note@2x.png in Resources */,
 				67B97C8F2013540A00F60E12 /* member@2x.png in Resources */,

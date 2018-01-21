@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "TBScrollViewEmpty"
-  s.version      = "1.0.0"
+  s.version      = "1.0.1"
   s.summary      = "Show tip view when UITableView/UICollectionView dataSource is empty."
 
   # This description is used to generate tags and improve search results.

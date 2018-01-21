@@ -8,9 +8,9 @@
 
 #import "TBEmptyView.h"
 
-#define imageTopName @"star"
+#define imageTopName @"tb_star"
 
-#define imageTopNetName @"network"
+#define imageTopNetName @"tb_network"
 
 #define titleString @"暂时无数据"
 
