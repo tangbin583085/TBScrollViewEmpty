@@ -3,10 +3,10 @@ TBScrollViewEmpty
 
 [![License](http://img.shields.io/badge/license-MIT-blue.svg)](http://opensource.org/licenses/MIT)&nbsp;
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)&nbsp;
-[![CocoaPods](http://img.shields.io/cocoapods/v/YYKit.svg?style=flat)](http://cocoapods.org/pods/YYKit)&nbsp;
-[![CocoaPods](http://img.shields.io/cocoapods/p/YYKit.svg?style=flat)](http://cocoadocs.org/docsets/YYKit)&nbsp;
+[![CocoaPods](http://img.shields.io/cocoapods/v/TBScrollViewEmpty.svg?style=flat)](http://cocoapods.org/pods/TBScrollViewEmpty)&nbsp;
+[![CocoaPods](http://img.shields.io/cocoapods/p/TBScrollViewEmpty.svg?style=flat)](http://cocoadocs.org/docsets/TBScrollViewEmpty)&nbsp;
 [![Support](https://img.shields.io/badge/support-iOS%206%2B%20-blue.svg?style=flat)](https://www.apple.com/nl/ios/)&nbsp;
-[![Build Status](https://travis-ci.org/ibireme/YYKit.svg?branch=master)](https://travis-ci.org/ibireme/YYKit)
+[![Build Status](https://travis-ci.org/ibireme/TBScrollViewEmpty.svg?branch=master)](https://travis-ci.org/ibireme/TBScrollViewEmpty)
 
 
 What
