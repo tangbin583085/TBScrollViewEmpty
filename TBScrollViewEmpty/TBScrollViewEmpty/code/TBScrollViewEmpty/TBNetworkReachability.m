@@ -25,7 +25,7 @@ NSString *kReachabilityChangedNotification = @"kNetworkReachabilityChangedNotifi
 
 #pragma mark - Supporting functions
 
-#define kShouldPrintReachabilityFlags 1
+#define kShouldPrintReachabilityFlags 0
 
 static void PrintReachabilityFlags(SCNetworkReachabilityFlags flags, const char* comment)
 {
@@ -165,7 +165,7 @@ static void ReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkReach
 
 - (TBNetworkStatus)networkStatusForFlags:(SCNetworkReachabilityFlags)flags
 {
-//    PrintReachabilityFlags(flags, "networkStatusForFlags");
+    PrintReachabilityFlags(flags, "networkStatusForFlags");
 	if ((flags & kSCNetworkReachabilityFlagsReachable) == 0)
 	{
 		// The target host is not reachable.
