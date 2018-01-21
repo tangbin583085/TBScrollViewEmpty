@@ -17,7 +17,7 @@ Installation
 ==============
 1. Add `pod 'TBScrollViewEmpty'` to your Podfile.
 2. Run `pod install` or `pod update`.
-3. Import \<TBScrollViewEmpty.h\>.
+3. `#import  <TBScrollViewEmpty.h>`
 
 Feature
 ==============
@@ -32,7 +32,7 @@ Demo
 
 How to use
 ==============
-- `Import \<TBScrollViewEmpty.h\>.` ， then this framework will show standard emptyView automatically when the data is empty.
+- `#import  <TBScrollViewEmpty.h>` ， then this framework will show standard emptyView automatically when the data is empty.
 - You don't even need  to conform to delegate, unless you want to  customize development.
 
 License
@@ -60,7 +60,7 @@ Github and Source
 ==============
 1. Add `pod 'TBScrollViewEmpty'` to your Podfile.
 2. Run `pod install` or `pod update`.
-3. Import \<TBScrollViewEmpty.h\>.
+3. `#import  <TBScrollViewEmpty.h>`
 
 特性
 ==============
@@ -75,7 +75,7 @@ Demo
 
 如何用
 ==============
-- `Import \<TBScrollViewEmpty.h\>`，框架会在数据为空的时候自动帮你添加或者移除提示视图。
+- `#import  <TBScrollViewEmpty.h>`，框架会在数据为空的时候自动帮添加或者移除提示视图。
 - 你无须遵循本框架的代理，除非你需要自定义视图开发。
 
 
