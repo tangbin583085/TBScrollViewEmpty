@@ -24,7 +24,7 @@ Pod::Spec.new do |s|
   #   * Try to keep it short, snappy and to the point.
   #   * Write the description between the DESC delimiters below.
   #   * Finally, don't worry about the indent, CocoaPods strips it!
-  s.description  = "Show tip view when UITableView/UICollectionView dataSource is empty, reloadata is empty,nil"
+  s.description  = "Show tip view when UITableView/UICollectionView dataSource is empty, reloadata is empty,nil, UITableView/UICollectionView数据为空时候，自动添加缺省页"
 
   s.homepage     = "https://github.com/tangbin583085/TBScrollViewEmpty"
   # s.screenshots  = "www.example.com/screenshots_1.gif", "www.example.com/screenshots_2.gif"
