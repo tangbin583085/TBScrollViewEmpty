@@ -53,10 +53,13 @@ static const BOOL tb_isShowButton = NO; // 显示按钮
 
 - (id<TBSrollViewEmptyDelegate>)tb_EmptyDelegate {
     
-    // 防止VC 或者Window被释放掉
+    // 防止VC或者window已经释放掉
     if (![self tb_viewController]) return nil;
-    
-    return objc_getAssociatedObject(self, &TBEmptyDelegateKey);
+    id delegateTemp = objc_getAssociatedObject(self, &TBEmptyDelegateKey);
+    if (!delegateTemp) {
+        delegateTemp = [self tb_viewController];
+    }
+    return delegateTemp;
 }
 
 - (void)createEmptyView {
@@ -202,11 +205,20 @@ static const BOOL tb_isShowButton = NO; // 显示按钮
         for (NSInteger section = 0; section<tableView.numberOfSections; section++) {
             totalCount += [tableView numberOfRowsInSection:section];
         }
+        
+        if (totalCount <= 0) {
+            totalCount = tableView.numberOfSections;
+        }
+        
     } else if ([self isKindOfClass:[UICollectionView class]]) {
         UICollectionView *collectionView = (UICollectionView *)self;
         
         for (NSInteger section = 0; section<collectionView.numberOfSections; section++) {
             totalCount += [collectionView numberOfItemsInSection:section];
+        }
+        
+        if (totalCount <= 0) {
+            totalCount = collectionView.numberOfSections;
         }
     }
     return totalCount;
