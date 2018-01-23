@@ -57,7 +57,15 @@
 - (instancetype)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
         self.padding = frame.size.width * 0.1;
-        self.paddingTop = frame.size.width * 0.05;
+        self.paddingTop = frame.size.height * 0.025;
+        
+        // 防止过大或者过小
+        if (self.padding > 50 || self.padding < 5) {
+            self.padding = 10;
+        }
+        if (self.paddingTop > 50 || self.paddingTop < 5) {
+            self.paddingTop = 10;
+        }
     }
     return self;
 }

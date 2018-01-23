@@ -122,17 +122,15 @@ static const BOOL tb_isShowButton = NO; // 显示按钮
         }
         
         // 设置按钮文字
-        if ([self btnDidResponseHide]) { // 代理有反应就设置
-            if ([self.tb_EmptyDelegate respondsToSelector:@selector(tb_emptyButtonTitle:network:)]) {
-                NSAttributedString *attributedText = [self.tb_EmptyDelegate tb_emptyButtonTitle:self network:[self networkdStatus]];
-                if (attributedText) {
-                    [tbEmptyView setButonTitle:attributedText network:[self networkdStatus] isShow:YES];
-                }else if ([attributedText.string isEqualToString:@""]) {
-                    [tbEmptyView setButonTitle:nil network:[self networkdStatus] isShow:YES];
-                }
-            }else {
-                [tbEmptyView setButonTitle:nil network:[self networkdStatus] isShow:tb_isShowButton];
+        if ([self.tb_EmptyDelegate respondsToSelector:@selector(tb_emptyButtonTitle:network:)]) {
+            NSAttributedString *attributedText = [self.tb_EmptyDelegate tb_emptyButtonTitle:self network:[self networkdStatus]];
+            if (attributedText) {
+                [tbEmptyView setButonTitle:attributedText network:[self networkdStatus] isShow:YES];
+            }else if ([attributedText.string isEqualToString:@""]) {
+                [tbEmptyView setButonTitle:nil network:[self networkdStatus] isShow:YES];
             }
+        }else {
+            [tbEmptyView setButonTitle:nil network:[self networkdStatus] isShow:tb_isShowButton];
         }
 
     }
@@ -250,23 +248,6 @@ static const BOOL tb_isShowButton = NO; // 显示按钮
         }
     }
     return nil;
-}
-
-#pragma mark <如果没有相应，隐藏按钮btn>
-- (BOOL)btnDidResponseHide {
-    BOOL response = NO;
-    
-    if ([self.tb_EmptyDelegate respondsToSelector:@selector(tb_emptyButtonClick:network:)]) {
-        response = YES;
-    } else {
-        
-        // 检测是否VC或者Window响应
-        UIResponder *reponder = [self tb_viewController];
-        if ([reponder respondsToSelector:@selector(tb_emptyButtonClick:network:)]) {
-            response = YES;
-        }
-    }
-    return response;
 }
 
 @end
