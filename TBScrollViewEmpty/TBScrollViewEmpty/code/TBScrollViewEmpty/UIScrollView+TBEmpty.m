@@ -31,7 +31,6 @@ static const char TBShowEmptyViewStoreKey = '\0'; // 是否显示emptyView的key
 static const char TBSystemReloadKey = '\0'; // 系统布局tableView调用reloadData的key
 static const char TBEmptyViewKey = '\0'; // emptyView的key
 static const char TBEmptyDelegateKey = '\0'; // 代理的key
-static const char TBNetworkReachabilityKey = '\0'; // 网络对象的key
 
 
 static const BOOL tb_isShowEmptyViewDefalut = YES; // 默认显示emptyView
@@ -44,19 +43,6 @@ static const BOOL tb_isShowDetailLB = YES; // 显示详情
 
 static const BOOL tb_isShowButton = NO; // 显示按钮
 
-- (TBNetworkReachability *)internetReachability {
-    
-    TBNetworkReachability *internetReachability = objc_getAssociatedObject(self, &TBNetworkReachabilityKey);
-    if (internetReachability == nil) {
-        // 创建并且存储
-        internetReachability = [TBNetworkReachability reachabilityForInternetConnection];
-        objc_setAssociatedObject(self, &TBNetworkReachabilityKey,
-                                 internetReachability, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-        [internetReachability startNotifier];
-    }
-    return internetReachability;
-}
-
 // 代理
 - (void)setTb_EmptyDelegate:(id<TBSrollViewEmptyDelegate>)tb_EmptyDelegate {
     
@@ -66,6 +52,10 @@ static const BOOL tb_isShowButton = NO; // 显示按钮
 }
 
 - (id<TBSrollViewEmptyDelegate>)tb_EmptyDelegate {
+    
+    // 防止VC 或者Window被释放掉
+    if (![self tb_viewController]) return nil;
+    
     return objc_getAssociatedObject(self, &TBEmptyDelegateKey);
 }
 
@@ -132,16 +122,19 @@ static const BOOL tb_isShowButton = NO; // 显示按钮
         }
         
         // 设置按钮文字
-        if ([self.tb_EmptyDelegate respondsToSelector:@selector(tb_emptyButtonTitle:network:)]) {
-            NSAttributedString *attributedText = [self.tb_EmptyDelegate tb_emptyButtonTitle:self network:[self networkdStatus]];
-            if (attributedText) {
-                [tbEmptyView setButonTitle:attributedText network:[self networkdStatus] isShow:YES];
-            }else if ([attributedText.string isEqualToString:@""]) {
-                [tbEmptyView setButonTitle:nil network:[self networkdStatus] isShow:YES];
+        if ([self btnDidResponseHide]) { // 代理有反应就设置
+            if ([self.tb_EmptyDelegate respondsToSelector:@selector(tb_emptyButtonTitle:network:)]) {
+                NSAttributedString *attributedText = [self.tb_EmptyDelegate tb_emptyButtonTitle:self network:[self networkdStatus]];
+                if (attributedText) {
+                    [tbEmptyView setButonTitle:attributedText network:[self networkdStatus] isShow:YES];
+                }else if ([attributedText.string isEqualToString:@""]) {
+                    [tbEmptyView setButonTitle:nil network:[self networkdStatus] isShow:YES];
+                }
+            }else {
+                [tbEmptyView setButonTitle:nil network:[self networkdStatus] isShow:tb_isShowButton];
             }
-        }else {
-            [tbEmptyView setButonTitle:nil network:[self networkdStatus] isShow:tb_isShowButton];
         }
+
     }
     
     // emptyView设置key
@@ -231,7 +224,7 @@ static const BOOL tb_isShowButton = NO; // 显示按钮
 
 #pragma mark <网络状态>
 - (TBNetworkStatus)networkdStatus {
-    TBNetworkStatus netStatus = [[self internetReachability] currentReachabilityStatus];
+    TBNetworkStatus netStatus = [[TBNetworkReachability shareInstancetype] currentReachabilityStatus];
     switch (netStatus)
     {
         case TBNetworkStatusNotReachable:
@@ -244,6 +237,36 @@ static const BOOL tb_isShowButton = NO; // 显示按钮
         }
     }
     return netStatus;
+}
+
+#pragma mark <找出vc，或者window>
+- (UIResponder *)tb_viewController {
+    for (UIView *view = self; view; view = view.superview) {
+        UIResponder *nextResponder = [view nextResponder];
+        if ([nextResponder isKindOfClass:[UIViewController class]]) {
+            return (UIViewController *)nextResponder;
+        } else if ([nextResponder isKindOfClass:[UIWindow class]]) {
+            return (UIWindow *)nextResponder;
+        }
+    }
+    return nil;
+}
+
+#pragma mark <如果没有相应，隐藏按钮btn>
+- (BOOL)btnDidResponseHide {
+    BOOL response = NO;
+    
+    if ([self.tb_EmptyDelegate respondsToSelector:@selector(tb_emptyButtonClick:network:)]) {
+        response = YES;
+    } else {
+        
+        // 检测是否VC或者Window响应
+        UIResponder *reponder = [self tb_viewController];
+        if ([reponder respondsToSelector:@selector(tb_emptyButtonClick:network:)]) {
+            response = YES;
+        }
+    }
+    return response;
 }
 
 @end

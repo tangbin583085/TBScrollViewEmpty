@@ -20,7 +20,7 @@
 //TBNetworkReachability fully support IPv6.  For full details, see ReadMe.md.
 
 
-NSString *kReachabilityChangedNotification = @"kNetworkReachabilityChangedNotification";
+NSString *TBReachabilityChangedNotification = @"kNetworTBReachabilityChangedNotification";
 
 
 #pragma mark - Supporting functions
@@ -56,15 +56,25 @@ static void ReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkReach
 
     TBNetworkReachability* noteObject = (__bridge TBNetworkReachability *)info;
     // Post a notification to notify the client that the network reachability changed.
-    [[NSNotificationCenter defaultCenter] postNotificationName: kReachabilityChangedNotification object: noteObject];
+    [[NSNotificationCenter defaultCenter] postNotificationName: TBReachabilityChangedNotification object: noteObject];
 }
 
+static TBNetworkReachability *_shareInstancetype;
 
 #pragma mark - TBNetworkReachability implementation
 
 @implementation TBNetworkReachability
 {
 	SCNetworkReachabilityRef _reachabilityRef;
+}
+
++ (instancetype)shareInstancetype {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        _shareInstancetype = [TBNetworkReachability reachabilityForInternetConnection];
+        [_shareInstancetype startNotifier];
+    });
+    return _shareInstancetype;
 }
 
 + (instancetype)reachabilityWithHostName:(NSString *)hostName

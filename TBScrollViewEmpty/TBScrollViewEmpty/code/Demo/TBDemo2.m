@@ -72,7 +72,7 @@
 }
 
 - (void)tb_emptyButtonClick:(UIButton *)btn network:(TBNetworkStatus)status {
-    [self loadNewData];
+    [self.tableView.mj_header beginRefreshing];
 }
 
 #pragma mark - Table view data source

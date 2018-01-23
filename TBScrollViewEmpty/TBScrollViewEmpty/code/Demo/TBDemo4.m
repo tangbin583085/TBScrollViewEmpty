@@ -51,7 +51,7 @@ static NSString * const reuseIdentifier = @"Cell";
 }
 
 - (void)tb_emptyButtonClick:(UIButton *)btn network:(TBNetworkStatus)status {
-    [self loadNewData];
+    [self.collectionView.mj_header beginRefreshing];
 }
 
 - (NSAttributedString *)tb_emptyButtonTitle:(UIScrollView *)scrollView network:(TBNetworkStatus)status {

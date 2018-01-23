@@ -21,10 +21,13 @@ typedef enum : NSInteger {
 //TBNetworkReachability fully support IPv6.  For full details, see ReadMe.md.
 
 
-extern NSString *kReachabilityChangedNotification;
+extern NSString *TBReachabilityChangedNotification;
 
 
 @interface TBNetworkReachability : NSObject
+
+// 单例
++ (instancetype)shareInstancetype;
 
 /*!
  * Use to check the reachability of a given host name.
