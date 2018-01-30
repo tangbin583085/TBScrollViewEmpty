@@ -206,19 +206,11 @@ static const BOOL tb_isShowButton = NO; // 显示按钮
             totalCount += [tableView numberOfRowsInSection:section];
         }
         
-        if (totalCount <= 0) {
-            totalCount = tableView.numberOfSections;
-        }
-        
     } else if ([self isKindOfClass:[UICollectionView class]]) {
         UICollectionView *collectionView = (UICollectionView *)self;
         
         for (NSInteger section = 0; section<collectionView.numberOfSections; section++) {
             totalCount += [collectionView numberOfItemsInSection:section];
-        }
-        
-        if (totalCount <= 0) {
-            totalCount = collectionView.numberOfSections;
         }
     }
     return totalCount;
