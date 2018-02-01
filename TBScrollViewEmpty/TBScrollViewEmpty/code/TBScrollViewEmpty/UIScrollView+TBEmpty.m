@@ -161,6 +161,9 @@ static const BOOL tb_isShowButton = NO; // 显示按钮
         return;
     }
     
+    // 只有主窗口才显示
+    if (self.window != [UIApplication sharedApplication].keyWindow) return;
+    
     // 是否启动emptyView
     if ([self.tb_EmptyDelegate respondsToSelector:@selector(tb_showEmptyView:network:)]) {
         

@@ -20,7 +20,7 @@
 //TBNetworkReachability fully support IPv6.  For full details, see ReadMe.md.
 
 
-NSString *TBReachabilityChangedNotification = @"kNetworTBReachabilityChangedNotification";
+NSString *TBReachabilityChangedNotification = @"TBReachabilityChangedNotification";
 
 
 #pragma mark - Supporting functions
