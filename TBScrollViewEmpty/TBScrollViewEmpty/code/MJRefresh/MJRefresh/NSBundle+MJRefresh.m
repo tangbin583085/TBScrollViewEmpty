@@ -3,7 +3,7 @@
 //  MJRefreshExample
 //
 //  Created by MJ Lee on 16/6/13.
-//  Copyright © 2016年 小码哥. All rights reserved.
+//  Copyright © 2018年 小码哥. All rights reserved.
 //
 
 #import "NSBundle+MJRefresh.h"
