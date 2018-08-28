@@ -31,6 +31,7 @@ static const char TBShowEmptyViewStoreKey = '\0'; // 是否显示emptyView的key
 static const char TBSystemReloadKey = '\0'; // 系统布局tableView调用reloadData的key
 static const char TBEmptyViewKey = '\0'; // emptyView的key
 static const char TBEmptyDelegateKey = '\0'; // 代理的key
+static const char TBKeyWindow = '\0'; // 视图的window是否是KeyWindow
 
 
 static const BOOL tb_isShowEmptyViewDefalut = YES; // 默认显示emptyView
@@ -162,7 +163,8 @@ static const BOOL tb_isShowButton = NO; // 显示按钮
     }
     
     // 只有主窗口才显示
-    if (self.window != [UIApplication sharedApplication].keyWindow) return;
+    BOOL isKeyWindow = (BOOL)objc_getAssociatedObject(self, &TBKeyWindow);
+    if (self.window != [UIApplication sharedApplication].keyWindow && !isKeyWindow) return;
     
     // 是否启动emptyView
     if ([self.tb_EmptyDelegate respondsToSelector:@selector(tb_showEmptyView:network:)]) {
@@ -264,7 +266,25 @@ static const BOOL tb_isShowButton = NO; // 显示按钮
 + (void)load
 {
     [self exchangeInstanceMethod1:@selector(reloadData) method2:@selector(tb_reloadData)];
+    
+    [self exchangeInstanceMethod1:@selector(didMoveToWindow) method2:@selector(tb_didMoveToWindow)];
 }
+
+- (void)tb_didMoveToWindow {
+    [self tb_didMoveToWindow];
+    
+    // 存储是否是否为keyWindow
+    if (self.window == [UIApplication sharedApplication].keyWindow) {
+        // 存储
+        objc_setAssociatedObject(self, &TBKeyWindow,
+                                 @(YES), OBJC_ASSOCIATION_ASSIGN);
+    } else {
+        // 存储
+        objc_setAssociatedObject(self, &TBKeyWindow,
+                                 @(NO), OBJC_ASSOCIATION_ASSIGN);
+    }
+}
+
 
 - (void)tb_reloadData
 {
@@ -279,6 +299,22 @@ static const BOOL tb_isShowButton = NO; // 显示按钮
 + (void)load
 {
     [self exchangeInstanceMethod1:@selector(reloadData) method2:@selector(tb_reloadData)];
+    [self exchangeInstanceMethod1:@selector(didMoveToWindow) method2:@selector(tb_didMoveToWindow)];
+}
+
+- (void)tb_didMoveToWindow {
+    [self tb_didMoveToWindow];
+    
+    // 存储是否是否为keyWindow
+    if (self.window == [UIApplication sharedApplication].keyWindow) {
+        // 存储
+        objc_setAssociatedObject(self, &TBKeyWindow,
+                                 @(YES), OBJC_ASSOCIATION_ASSIGN);
+    } else {
+        // 存储
+        objc_setAssociatedObject(self, &TBKeyWindow,
+                                 @(NO), OBJC_ASSOCIATION_ASSIGN);
+    }
 }
 
 - (void)tb_reloadData
