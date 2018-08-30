@@ -13,7 +13,7 @@
 
 /**
  交换实例方法
-
+ 
  @param method1 目标函数
  @param method2 源函数
  */
@@ -29,10 +29,11 @@
 
 static const char TBShowEmptyViewStoreKey = '\0'; // 是否显示emptyView的key
 static const char TBSystemReloadKey = '\0'; // 系统布局tableView调用reloadData的key
-static const char TBEmptyViewKey = '\0'; // emptyView的key
-static const char TBEmptyDelegateKey = '\0'; // 代理的key
+
 static const char TBKeyWindow = '\0'; // 视图的window是否是KeyWindow
 
+static const char TBEmptyViewKey = '\0'; // emptyView的key
+static const char TBEmptyDelegateKey = '\0'; // 代理的key
 
 static const BOOL tb_isShowEmptyViewDefalut = YES; // 默认显示emptyView
 
@@ -46,7 +47,6 @@ static const BOOL tb_isShowButton = NO; // 显示按钮
 
 // 代理
 - (void)setTb_EmptyDelegate:(id<TBSrollViewEmptyDelegate>)tb_EmptyDelegate {
-    
     // 存储
     objc_setAssociatedObject(self, &TBEmptyDelegateKey,
                              tb_EmptyDelegate, OBJC_ASSOCIATION_ASSIGN);
@@ -61,6 +61,19 @@ static const BOOL tb_isShowButton = NO; // 显示按钮
         delegateTemp = [self tb_viewController];
     }
     return delegateTemp;
+}
+
+// 找出vc，或者window
+- (UIResponder *)tb_viewController {
+    for (UIView *view = self; view; view = view.superview) {
+        UIResponder *nextResponder = [view nextResponder];
+        if ([nextResponder isKindOfClass:[UIViewController class]]) {
+            return (UIViewController *)nextResponder;
+        } else if ([nextResponder isKindOfClass:[UIWindow class]]) {
+            return (UIWindow *)nextResponder;
+        }
+    }
+    return nil;
 }
 
 - (void)createEmptyView {
@@ -126,17 +139,21 @@ static const BOOL tb_isShowButton = NO; // 显示按钮
         }
         
         // 设置按钮文字
-        if ([self.tb_EmptyDelegate respondsToSelector:@selector(tb_emptyButtonTitle:network:)]) {
-            NSAttributedString *attributedText = [self.tb_EmptyDelegate tb_emptyButtonTitle:self network:[self networkdStatus]];
-            if (attributedText) {
-                [tbEmptyView setButonTitle:attributedText network:[self networkdStatus] isShow:YES];
-            }else if ([attributedText.string isEqualToString:@""]) {
-                [tbEmptyView setButonTitle:nil network:[self networkdStatus] isShow:YES];
+        if ([self btnDidResponseHide]) { // 自动隐藏btn
+            if ([self.tb_EmptyDelegate respondsToSelector:@selector(tb_emptyButtonTitle:network:)]) {
+                NSAttributedString *attributedText = [self.tb_EmptyDelegate tb_emptyButtonTitle:self network:[self networkdStatus]];
+                if (attributedText) {
+                    [tbEmptyView setButonTitle:attributedText network:[self networkdStatus] isShow:YES];
+                }else if ([attributedText.string isEqualToString:@""]) {
+                    [tbEmptyView setButonTitle:nil network:[self networkdStatus] isShow:YES];
+                }
+            }else {
+                
+                [tbEmptyView setButonTitle:nil network:[self networkdStatus] isShow:tb_isShowButton];
             }
-        }else {
-            [tbEmptyView setButonTitle:nil network:[self networkdStatus] isShow:tb_isShowButton];
+        } else {
+            NSLog(@"btn is not added due to btn's delegate did not reponse");
         }
-
     }
     
     // emptyView设置key
@@ -163,8 +180,8 @@ static const BOOL tb_isShowButton = NO; // 显示按钮
     }
     
     // 只有主窗口才显示
-    BOOL isKeyWindow = (BOOL)objc_getAssociatedObject(self, &TBKeyWindow);
-    if (self.window != [UIApplication sharedApplication].keyWindow && !isKeyWindow) return;
+    NSString *isKeyWindow = objc_getAssociatedObject(self, &TBKeyWindow);
+    if (self.window != [UIApplication sharedApplication].keyWindow && ![isKeyWindow isEqualToString:@"1"]) return;
     
     // 是否启动emptyView
     if ([self.tb_EmptyDelegate respondsToSelector:@selector(tb_showEmptyView:network:)]) {
@@ -195,7 +212,6 @@ static const BOOL tb_isShowButton = NO; // 显示按钮
             objc_setAssociatedObject(self, &TBEmptyViewKey,
                                      nil, OBJC_ASSOCIATION_ASSIGN);
         }
-        
         [self createEmptyView];
     }
 }
@@ -226,8 +242,34 @@ static const BOOL tb_isShowButton = NO; // 显示按钮
     
     if ([self.tb_EmptyDelegate respondsToSelector:@selector(tb_emptyButtonClick:network:)]) {
         [self.tb_EmptyDelegate tb_emptyButtonClick:btn network:[self networkdStatus]];
+    } else {
+        
+        UIResponder *reponder = [self tb_viewController];
+        if ([reponder respondsToSelector:@selector(tb_emptyButtonClick:network:)]) {
+            
+            id tb_EmptyDelegateTemp = reponder;
+            [tb_EmptyDelegateTemp tb_emptyButtonClick:btn network:[self networkdStatus]];
+        }
     }
 }
+
+#pragma mark <如果没有相应，隐藏按钮btn>
+- (BOOL)btnDidResponseHide {
+    BOOL response = NO;
+    
+    if ([self.tb_EmptyDelegate respondsToSelector:@selector(tb_emptyButtonClick:network:)]) {
+        response = YES;
+    } else {
+        
+        // 检测是否VC或者Window响应
+        UIResponder *reponder = [self tb_viewController];
+        if ([reponder respondsToSelector:@selector(tb_emptyButtonClick:network:)]) {
+            response = YES;
+        }
+    }
+    return response;
+}
+
 
 #pragma mark <网络状态>
 - (TBNetworkStatus)networkdStatus {
@@ -246,19 +288,6 @@ static const BOOL tb_isShowButton = NO; // 显示按钮
     return netStatus;
 }
 
-#pragma mark <找出vc，或者window>
-- (UIResponder *)tb_viewController {
-    for (UIView *view = self; view; view = view.superview) {
-        UIResponder *nextResponder = [view nextResponder];
-        if ([nextResponder isKindOfClass:[UIViewController class]]) {
-            return (UIViewController *)nextResponder;
-        } else if ([nextResponder isKindOfClass:[UIWindow class]]) {
-            return (UIWindow *)nextResponder;
-        }
-    }
-    return nil;
-}
-
 @end
 
 @implementation UITableView (TBEmpty)
@@ -274,14 +303,10 @@ static const BOOL tb_isShowButton = NO; // 显示按钮
     [self tb_didMoveToWindow];
     
     // 存储是否是否为keyWindow
-    if (self.window == [UIApplication sharedApplication].keyWindow) {
+    if (self.window && self.window == [UIApplication sharedApplication].keyWindow) {
         // 存储
         objc_setAssociatedObject(self, &TBKeyWindow,
-                                 @(YES), OBJC_ASSOCIATION_ASSIGN);
-    } else {
-        // 存储
-        objc_setAssociatedObject(self, &TBKeyWindow,
-                                 @(NO), OBJC_ASSOCIATION_ASSIGN);
+                                 @"1", OBJC_ASSOCIATION_COPY_NONATOMIC);
     }
 }
 
@@ -306,14 +331,10 @@ static const BOOL tb_isShowButton = NO; // 显示按钮
     [self tb_didMoveToWindow];
     
     // 存储是否是否为keyWindow
-    if (self.window == [UIApplication sharedApplication].keyWindow) {
+    if (self.window && self.window == [UIApplication sharedApplication].keyWindow) {
         // 存储
         objc_setAssociatedObject(self, &TBKeyWindow,
-                                 @(YES), OBJC_ASSOCIATION_ASSIGN);
-    } else {
-        // 存储
-        objc_setAssociatedObject(self, &TBKeyWindow,
-                                 @(NO), OBJC_ASSOCIATION_ASSIGN);
+                                 @"1", OBJC_ASSOCIATION_COPY_NONATOMIC);
     }
 }
 
@@ -325,3 +346,4 @@ static const BOOL tb_isShowButton = NO; // 显示按钮
 }
 
 @end
+

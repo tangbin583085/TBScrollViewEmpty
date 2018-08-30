@@ -22,9 +22,11 @@
 
 #define titleForBtn @"重试"
 
-#define titleColor [UIColor colorWithRed:90 / 255.0 green:90 / 255.0 blue:90 / 255.0 alpha:1.0]
+#define titleColor [UIColor colorWithRed:153 / 255.0 green:153 / 255.0 blue:153 / 255.0 alpha:1.0]
 
-#define detailColor [UIColor colorWithRed:90 / 255.0 green:90 / 255.0 blue:90 / 255.0 alpha:1.0]
+#define detailColor [UIColor colorWithRed:153 / 255.0 green:153 / 255.0 blue:153 / 255.0 alpha:1.0]
+
+#define btnBgColor [UIColor colorWithRed:249 / 255.0 green:213 / 255.0 blue:72 / 255.0 alpha:1.0]
 
 #define btnTitleColor [UIColor colorWithRed:53 / 255.0 green:126 / 255.0 blue:222 / 255.0 alpha:1.0]
 
@@ -57,14 +59,11 @@
 - (instancetype)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
         self.padding = frame.size.width * 0.1;
-        self.paddingTop = frame.size.height * 0.025;
+        self.paddingTop = frame.size.width * 0.05;
         
         // 防止过大或者过小
         if (self.padding > 50 || self.padding < 5) {
             self.padding = 10;
-        }
-        if (self.paddingTop > 50 || self.paddingTop < 5) {
-            self.paddingTop = 10;
         }
     }
     return self;
@@ -118,6 +117,8 @@
     if (_button == nil) {
         UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
         button.titleLabel.font = btnTitleFont;
+        button.backgroundColor = btnBgColor;
+        button.clipsToBounds = YES;
         [button setTitle:titleForBtn forState:UIControlStateNormal];
         [button setTitleColor:btnTitleColor forState:UIControlStateNormal];
         [button setTitleColor:[UIColor grayColor] forState:UIControlStateHighlighted];
@@ -203,12 +204,15 @@
         [self.button setAttributedTitle:titleAttrString forState:UIControlStateNormal];
     }
     
-    CGFloat maxWidth = CGRectGetWidth(self.frame) - 4 * self.padding;
-    CGRect frame = CGRectMake(self.padding * 2, self.totalHeight + self.paddingTop * 0.5, maxWidth, self.button.titleLabel.font.pointSize + self.padding);
-    self.button.frame = frame;
+    [self.button sizeToFit];
+    self.button.frame = CGRectMake(0, 0, self.button.frame.size.width + 60, self.button.frame.size.height + 6.0);
+    self.button.center = CGPointMake(CGRectGetMidX(self.frame), self.totalHeight + self.paddingTop * 2.0 + self.button.frame.size.height * 0.5);
+    self.button.layer.cornerRadius = self.button.frame.size.height / 2.0;
     
     // 更新总高度
-    self.totalHeight = CGRectGetMaxY(frame);
+    self.totalHeight = CGRectGetMaxY(self.button.frame);
+    self.totalHeight = CGRectGetMaxY(self.button.frame);
 }
 
 @end
+
