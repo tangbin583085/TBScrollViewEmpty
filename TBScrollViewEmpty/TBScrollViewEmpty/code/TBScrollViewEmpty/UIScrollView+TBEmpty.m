@@ -85,75 +85,24 @@ static const BOOL tb_isShowButton = NO; // 显示按钮
         
         // 自定义的emptyView
         emptyView = [self.tb_EmptyDelegate tb_emptyView:self network:[self networkdStatus]];
-        [self addSubview:emptyView];
-        [self bringSubviewToFront:emptyView];
         
-        // 没有设置frame
-        if (CGRectIsEmpty(emptyView.frame) || CGRectIsEmpty(emptyView.frame)) {
-            emptyView.frame = rect;
-        }
-        
-    }else {
-        
-        // 框架默认的
-        TBEmptyView *tbEmptyView = [[TBEmptyView alloc] initWithFrame:rect];
-        tbEmptyView.delegate = self;
-        emptyView = tbEmptyView;
-        [self addSubview:emptyView];
-        [self bringSubviewToFront:emptyView];
-        
-        // 设置图片top
-        if ([self.tb_EmptyDelegate respondsToSelector:@selector(tb_emptyImage:network:)]) {
-            UIImage *image = [self.tb_EmptyDelegate tb_emptyImage:self network:[self networkdStatus]];
-            if (image) {
-                [tbEmptyView setImageView:image network:[self networkdStatus] isShow:YES];
-            }
-        }else {
+        if (emptyView != nil) {
+            [self addSubview:emptyView];
+            [self bringSubviewToFront:emptyView];
             
-            // 默认图片
-            [tbEmptyView setImageView:nil network:[self networkdStatus] isShow:tb_isShowImagetView];
-        }
-        
-        // 设置标题文字
-        if ([self.tb_EmptyDelegate respondsToSelector:@selector(tb_emptyTitle:network:)]) {
-            NSAttributedString *attributedText = [self.tb_EmptyDelegate tb_emptyTitle:self  network:[self networkdStatus]];
-            if (attributedText) {
-                [tbEmptyView setTitltString:attributedText network:[self networkdStatus] isShow:YES];
-            } else if ([attributedText.string isEqualToString:@""]) {
-                [tbEmptyView setTitltString:nil network:[self networkdStatus] isShow:YES];
-            }
-        }else {
-            [tbEmptyView setTitltString:nil network:[self networkdStatus] isShow:tb_isShowTitleLB];
-        }
-        
-        // 设置详情文字
-        if ([self.tb_EmptyDelegate respondsToSelector:@selector(tb_emptyDetial:network:)]) {
-            NSAttributedString *attributedText = [self.tb_EmptyDelegate tb_emptyDetial:self network:[self networkdStatus]];
-            if (attributedText) {
-                [tbEmptyView setDetailString:attributedText network:[self networkdStatus] isShow:YES];
-            }else if ([attributedText.string isEqualToString:@""]) {
-                [tbEmptyView setDetailString:nil network:[self networkdStatus] isShow:YES];
-            }
-        }else {
-            [tbEmptyView setDetailString:nil network:[self networkdStatus] isShow:tb_isShowDetailLB];
-        }
-        
-        // 设置按钮文字
-        if ([self btnDidResponseHide]) { // 自动隐藏btn
-            if ([self.tb_EmptyDelegate respondsToSelector:@selector(tb_emptyButtonTitle:network:)]) {
-                NSAttributedString *attributedText = [self.tb_EmptyDelegate tb_emptyButtonTitle:self network:[self networkdStatus]];
-                if (attributedText) {
-                    [tbEmptyView setButonTitle:attributedText network:[self networkdStatus] isShow:YES];
-                }else if ([attributedText.string isEqualToString:@""]) {
-                    [tbEmptyView setButonTitle:nil network:[self networkdStatus] isShow:YES];
-                }
-            }else {
-                
-                [tbEmptyView setButonTitle:nil network:[self networkdStatus] isShow:tb_isShowButton];
+            // 没有设置frame
+            if (CGRectIsEmpty(emptyView.frame) || CGRectIsEmpty(emptyView.frame)) {
+                emptyView.frame = rect;
             }
         } else {
-            NSLog(@"btn is not added due to btn's delegate did not reponse");
+            
+            // 还是使用默认的
+            [self setDefaultView:rect emptyView:emptyView];
         }
+    }else {
+        
+        // 使用默认的
+        [self setDefaultView:rect emptyView:emptyView];
     }
     
     // emptyView设置key
@@ -168,6 +117,70 @@ static const BOOL tb_isShowButton = NO; // 显示按钮
     }
     
 }
+
+- (void)setDefaultView:(CGRect)rect emptyView:(UIView *)emptyView  {
+    
+    // 框架默认的
+    TBEmptyView *tbEmptyView = [[TBEmptyView alloc] initWithFrame:rect];
+    tbEmptyView.delegate = self;
+    emptyView = tbEmptyView;
+    [self addSubview:emptyView];
+    [self bringSubviewToFront:emptyView];
+    
+    // 设置图片top
+    if ([self.tb_EmptyDelegate respondsToSelector:@selector(tb_emptyImage:network:)]) {
+        UIImage *image = [self.tb_EmptyDelegate tb_emptyImage:self network:[self networkdStatus]];
+        if (image) {
+            [tbEmptyView setImageView:image network:[self networkdStatus] isShow:YES];
+        }
+    }else {
+        
+        // 默认图片
+        [tbEmptyView setImageView:nil network:[self networkdStatus] isShow:tb_isShowImagetView];
+    }
+    
+    // 设置标题文字
+    if ([self.tb_EmptyDelegate respondsToSelector:@selector(tb_emptyTitle:network:)]) {
+        NSAttributedString *attributedText = [self.tb_EmptyDelegate tb_emptyTitle:self  network:[self networkdStatus]];
+        if (attributedText) {
+            [tbEmptyView setTitltString:attributedText network:[self networkdStatus] isShow:YES];
+        } else if ([attributedText.string isEqualToString:@""]) {
+            [tbEmptyView setTitltString:nil network:[self networkdStatus] isShow:YES];
+        }
+    }else {
+        [tbEmptyView setTitltString:nil network:[self networkdStatus] isShow:tb_isShowTitleLB];
+    }
+    
+    // 设置详情文字
+    if ([self.tb_EmptyDelegate respondsToSelector:@selector(tb_emptyDetial:network:)]) {
+        NSAttributedString *attributedText = [self.tb_EmptyDelegate tb_emptyDetial:self network:[self networkdStatus]];
+        if (attributedText) {
+            [tbEmptyView setDetailString:attributedText network:[self networkdStatus] isShow:YES];
+        }else if ([attributedText.string isEqualToString:@""]) {
+            [tbEmptyView setDetailString:nil network:[self networkdStatus] isShow:YES];
+        }
+    }else {
+        [tbEmptyView setDetailString:nil network:[self networkdStatus] isShow:tb_isShowDetailLB];
+    }
+    
+    // 设置按钮文字
+    if ([self btnDidResponseHide]) { // 自动隐藏btn
+        if ([self.tb_EmptyDelegate respondsToSelector:@selector(tb_emptyButtonTitle:network:)]) {
+            NSAttributedString *attributedText = [self.tb_EmptyDelegate tb_emptyButtonTitle:self network:[self networkdStatus]];
+            if (attributedText) {
+                [tbEmptyView setButonTitle:attributedText network:[self networkdStatus] isShow:YES];
+            }else if ([attributedText.string isEqualToString:@""]) {
+                [tbEmptyView setButonTitle:nil network:[self networkdStatus] isShow:YES];
+            }
+        }else {
+            
+            [tbEmptyView setButonTitle:nil network:[self networkdStatus] isShow:tb_isShowButton];
+        }
+    } else {
+        NSLog(@"btn is not added due to btn's delegate did not reponse");
+    }
+}
+
 
 - (void)addOrMoveEmptyView {
     
