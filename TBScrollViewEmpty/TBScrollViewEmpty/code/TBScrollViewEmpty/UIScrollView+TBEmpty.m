@@ -97,12 +97,12 @@ static const BOOL tb_isShowButton = NO; // 显示按钮
         } else {
             
             // 还是使用默认的
-            [self setDefaultView:rect emptyView:emptyView];
+            emptyView = [self setDefaultView:rect];
         }
     }else {
         
         // 使用默认的
-        [self setDefaultView:rect emptyView:emptyView];
+        emptyView = [self setDefaultView:rect];
     }
     
     // emptyView设置key
@@ -118,14 +118,13 @@ static const BOOL tb_isShowButton = NO; // 显示按钮
     
 }
 
-- (void)setDefaultView:(CGRect)rect emptyView:(UIView *)emptyView  {
+- (UIView *)setDefaultView:(CGRect)rect{
     
     // 框架默认的
     TBEmptyView *tbEmptyView = [[TBEmptyView alloc] initWithFrame:rect];
     tbEmptyView.delegate = self;
-    emptyView = tbEmptyView;
-    [self addSubview:emptyView];
-    [self bringSubviewToFront:emptyView];
+    [self addSubview:tbEmptyView];
+    [self bringSubviewToFront:tbEmptyView];
     
     // 设置图片top
     if ([self.tb_EmptyDelegate respondsToSelector:@selector(tb_emptyImage:network:)]) {
@@ -179,6 +178,8 @@ static const BOOL tb_isShowButton = NO; // 显示按钮
     } else {
         NSLog(@"btn is not added due to btn's delegate did not reponse");
     }
+    
+    return tbEmptyView;
 }
 
 
