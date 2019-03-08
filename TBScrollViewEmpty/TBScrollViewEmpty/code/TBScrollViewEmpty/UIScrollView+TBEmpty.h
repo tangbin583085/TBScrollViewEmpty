@@ -91,5 +91,14 @@
 
 @property (nonatomic, assign)id<TBSrollViewEmptyDelegate> tb_EmptyDelegate; // 代理
 
+/**
+ 自定义的emptyView
+ 
+ 主动设置自定义 emptyView，会覆盖框架默认的view
+ 
+ @param tb_emptyView 自定义的view
+ */
+- (void)tb_setCustomEmptyView:(UIView*)tb_emptyView;
+
 @end
 

@@ -230,6 +230,49 @@ static const BOOL tb_isShowButton = NO; // 显示按钮
     }
 }
 
+#pragma mark - 用于特殊情形 自定义 emptyView
+- (void)tb_setCustomEmptyView:(UIView *)tb_emptyView {
+    
+    // 存储首次运行reloadData, 系统表格LayoutSubViews
+    if (!objc_getAssociatedObject(self, &TBSystemReloadKey)) {
+        // 存储
+        objc_setAssociatedObject(self, &TBSystemReloadKey,
+                                 @(YES), OBJC_ASSOCIATION_ASSIGN);
+        return;
+    }
+    
+    // 只有主窗口才显示
+    NSString *isKeyWindow = objc_getAssociatedObject(self, &TBKeyWindow);
+    if (self.window != [UIApplication sharedApplication].keyWindow && ![isKeyWindow isEqualToString:@"1"]) return;
+    
+    
+    UIView *emptyView = objc_getAssociatedObject(self, &TBEmptyViewKey);
+    // 移除
+    if (emptyView && [self tb_totalDataCount] > 0) {
+        [emptyView removeFromSuperview];
+        objc_setAssociatedObject(self, &TBEmptyViewKey,
+                                 nil, OBJC_ASSOCIATION_ASSIGN);
+    }else if ([self tb_totalDataCount] <= 0){
+        
+        // 移除旧的生成新的
+        if (emptyView) {
+            [emptyView removeFromSuperview];
+            objc_setAssociatedObject(self, &TBEmptyViewKey,
+                                     nil, OBJC_ASSOCIATION_ASSIGN);
+        }
+        // emptyView设置key
+        objc_setAssociatedObject(self, &TBEmptyViewKey,
+                                 tb_emptyView, OBJC_ASSOCIATION_ASSIGN);
+        
+        if (CGRectIsEmpty(tb_emptyView.frame)) {
+            emptyView.frame = CGRectMake(0, 0, CGRectGetWidth(self.frame), CGRectGetHeight(self.frame));
+        }
+        
+        [self addSubview:tb_emptyView];
+        [self bringSubviewToFront:tb_emptyView];
+    }
+}
+
 #pragma mark - 获取Data数量
 - (NSInteger)tb_totalDataCount
 {
