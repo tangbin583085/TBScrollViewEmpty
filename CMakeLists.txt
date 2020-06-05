@@ -36,3 +36,7 @@ endforeach()
 target_link_libraries(TBScrollViewEmptyCore PUBLIC Qt${QT_VERSION_MAJOR}::Core)
 target_link_libraries(TBScrollViewEmptyWidgets PUBLIC TBScrollViewEmpty::Core Qt${QT_VERSION_MAJOR}::Widgets)
 
+if(TBEMPTY_BUILD_TESTS)
+    enable_testing()
+    add_subdirectory(tests)
+endif()
