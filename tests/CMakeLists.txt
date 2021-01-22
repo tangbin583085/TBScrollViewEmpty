@@ -1,5 +1,5 @@
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Test)
-foreach(test IN ITEMS controller states options view host)
+foreach(test IN ITEMS controller states options view host ownership)
     add_executable(tbempty_test_${test} tst_${test}.cpp)
     set_target_properties(tbempty_test_${test} PROPERTIES AUTOMOC ON)
     if(test STREQUAL "controller" OR test STREQUAL "states")
