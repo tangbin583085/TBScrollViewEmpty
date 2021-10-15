@@ -36,6 +36,23 @@ endforeach()
 target_link_libraries(TBScrollViewEmptyCore PUBLIC Qt${QT_VERSION_MAJOR}::Core)
 target_link_libraries(TBScrollViewEmptyWidgets PUBLIC TBScrollViewEmpty::Core Qt${QT_VERSION_MAJOR}::Widgets)
 
+include(CMakePackageConfigHelpers)
+set(TBEMPTY_CONFIG_DIR "${CMAKE_INSTALL_LIBDIR}/cmake/TBScrollViewEmpty")
+configure_package_config_file(cmake/TBScrollViewEmptyConfig.cmake.in
+    "${CMAKE_CURRENT_BINARY_DIR}/TBScrollViewEmptyConfig.cmake"
+    INSTALL_DESTINATION "${TBEMPTY_CONFIG_DIR}")
+write_basic_package_version_file("${CMAKE_CURRENT_BINARY_DIR}/TBScrollViewEmptyConfigVersion.cmake"
+    VERSION ${PROJECT_VERSION} COMPATIBILITY SameMajorVersion)
+install(TARGETS TBScrollViewEmptyCore TBScrollViewEmptyWidgets EXPORT TBScrollViewEmptyTargets
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR})
+install(DIRECTORY include/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+install(EXPORT TBScrollViewEmptyTargets NAMESPACE TBScrollViewEmpty::
+    DESTINATION "${TBEMPTY_CONFIG_DIR}")
+install(FILES "${CMAKE_CURRENT_BINARY_DIR}/TBScrollViewEmptyConfig.cmake"
+    "${CMAKE_CURRENT_BINARY_DIR}/TBScrollViewEmptyConfigVersion.cmake"
+    DESTINATION "${TBEMPTY_CONFIG_DIR}")
+install(FILES LICENSE DESTINATION "${CMAKE_INSTALL_DATADIR}/TBScrollViewEmpty")
+
 if(TBEMPTY_BUILD_TESTS)
     enable_testing()
     add_subdirectory(tests)
