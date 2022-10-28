@@ -43,6 +43,14 @@ QWidget* EmptyStateHost::takeCustomView() {
     if (!previous) return nullptr;
     disconnect(customDestroyed_);
     custom_.clear();
+    // Child buttons can also be connected to the host/controller. Disconnect them
+    // when releasing the page so a queued deletion cannot trigger a stale retry.
+    auto senders = previous->findChildren<QObject*>();
+    senders.append(previous);
+    for (auto* sender : senders) {
+        QObject::disconnect(sender, nullptr, controller_, nullptr);
+        QObject::disconnect(sender, nullptr, this, nullptr);
+    }
     stack_->removeWidget(previous);
     previous->hide();
     previous->setParent(nullptr);
@@ -55,9 +63,6 @@ void EmptyStateHost::setCustomView(QWidget* view) {
                  view->isAncestorOf(this) || view->parentWidget()))
         throw std::invalid_argument("custom view must be an unparented widget, not host/content");
     if (auto* previous = takeCustomView()) {
-        // Disconnect signals delivered to host-owned receivers before deferred deletion.
-        previous->disconnect(controller_);
-        previous->disconnect(this);
         previous->deleteLater();
     }
     if (view) {
