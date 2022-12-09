@@ -50,6 +50,8 @@ QWidget* EmptyStateHost::takeCustomView() {
     for (auto* sender : senders) {
         QObject::disconnect(sender, nullptr, controller_, nullptr);
         QObject::disconnect(sender, nullptr, this, nullptr);
+        QObject::disconnect(controller_, nullptr, sender, nullptr);
+        QObject::disconnect(this, nullptr, sender, nullptr);
     }
     stack_->removeWidget(previous);
     previous->hide();
