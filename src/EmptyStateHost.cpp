@@ -65,6 +65,8 @@ void EmptyStateHost::setCustomView(QWidget* view) {
                  view->isAncestorOf(this) || view->parentWidget()))
         throw std::invalid_argument("custom view must be an unparented widget, not host/content");
     if (auto* previous = takeCustomView()) {
+        // Keep it owned until DeferredDelete is delivered, including during shutdown.
+        previous->setParent(this);
         previous->deleteLater();
     }
     if (view) {
