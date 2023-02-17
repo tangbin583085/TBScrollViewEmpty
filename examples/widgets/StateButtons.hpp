@@ -2,7 +2,9 @@
 #include <TBScrollViewEmpty/TBScrollViewEmpty.hpp>
 #include <QHBoxLayout>
 #include <QPushButton>
+#include <QVBoxLayout>
 #include <functional>
+#include <utility>
 
 inline void addStateButtons(QVBoxLayout* layout, tbempty::EmptyStateHost* host,
                             const std::function<void()>& fill,
