@@ -21,9 +21,16 @@ int main(int argc, char** argv) {
     };
     const auto clear = [model] { model->setStringList({}); };
     addStateButtons(layout, host, fill, clear);
-    QObject::connect(host, &tbempty::EmptyStateHost::retryRequested, host, [host, fill] {
+    auto* retryTimer = new QTimer(host);
+    retryTimer->setSingleShot(true);
+    QObject::connect(retryTimer, &QTimer::timeout, host, fill);
+    QObject::connect(host, &tbempty::EmptyStateHost::stateChanged, retryTimer,
+                     [retryTimer](tbempty::EmptyStateSnapshot state) {
+        if (state.kind != tbempty::EmptyStateKind::Loading) retryTimer->stop();
+    });
+    QObject::connect(host, &tbempty::EmptyStateHost::retryRequested, host, [host, retryTimer] {
         host->controller()->setLoading();
-        QTimer::singleShot(500, host, fill);
+        retryTimer->start(500);
     });
     host->controller()->update(0);
     window.resize(680, 440);
