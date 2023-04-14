@@ -1,9 +1,11 @@
 #include <TBScrollViewEmpty/EmptyStateView.hpp>
 #include <QLabel>
 #include <QProgressBar>
+#include <QPixmap>
 #include <QPushButton>
 #include <QStyle>
 #include <QVBoxLayout>
+#include <QtMath>
 
 namespace tbempty {
 EmptyStateView::EmptyStateView(QWidget* parent) : QWidget(parent),
@@ -73,7 +75,10 @@ void EmptyStateView::apply(const EmptyStateSnapshot& snapshot, const EmptyStateO
                                            : options.icon;
     const auto size = options.iconSize.isValid() && !options.iconSize.isEmpty()
                     ? options.iconSize : QSize(64, 64);
-    image_->setPixmap(icon.pixmap(size));
+    const auto ratio = devicePixelRatioF();
+    auto pixmap = icon.pixmap(QSize(qRound(size.width() * ratio), qRound(size.height() * ratio)));
+    pixmap.setDevicePixelRatio(ratio);
+    image_->setPixmap(pixmap);
     image_->setVisible(options.showImage && snapshot.kind != EmptyStateKind::Loading &&
                        snapshot.kind != EmptyStateKind::Content);
 }
