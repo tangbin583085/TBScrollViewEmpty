@@ -5,6 +5,21 @@
 class StatesTest : public QObject {
     Q_OBJECT
 private slots:
+    void reentrantUpdateDoesNotAlterEmittedSnapshot() {
+        tbempty::EmptyStateController c;
+        connect(&c, &tbempty::EmptyStateController::stateChanged, &c,
+                [&c](tbempty::EmptyStateSnapshot state) {
+            if (state.kind == tbempty::EmptyStateKind::Loading) c.setError(QStringLiteral("nested"));
+        });
+        QSignalSpy spy(&c, &tbempty::EmptyStateController::stateChanged);
+        c.setLoading();
+        QCOMPARE(c.current().kind, tbempty::EmptyStateKind::Error);
+        QCOMPARE(spy.count(), 2);
+        QCOMPARE(qvariant_cast<tbempty::EmptyStateSnapshot>(spy[0][0]).kind,
+                 tbempty::EmptyStateKind::Error);
+        QCOMPARE(qvariant_cast<tbempty::EmptyStateSnapshot>(spy[1][0]).kind,
+                 tbempty::EmptyStateKind::Loading);
+    }
     void emptyAndOffline() {
         tbempty::EmptyStateController c;
         c.update(0);
