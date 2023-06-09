@@ -8,6 +8,22 @@
 class ViewTest : public QObject {
     Q_OBJECT
 private slots:
+    void fallbackIconSizeAndTextRefresh() {
+        tbempty::EmptyStateView view;
+        tbempty::EmptyStateOptions options;
+        options.iconSize = QSize(0, 0);
+        const auto state = tbempty::EmptyStateSnapshot{
+            tbempty::EmptyStateKind::Empty, 0, tbempty::NetworkStatus::Unknown, {}};
+        view.apply(state, options);
+        auto* image = view.findChild<QLabel*>(QStringLiteral("tbempty.image"));
+        auto* title = view.findChild<QLabel*>(QStringLiteral("tbempty.title"));
+        QVERIFY(image && title);
+        QVERIFY(!image->isHidden());
+        options.emptyTitle = QStringLiteral("Changed title");
+        view.apply(state, options);
+        QCOMPARE(title->text(), options.emptyTitle);
+        QCOMPARE(view.accessibleName(), options.emptyTitle);
+    }
     void visibilityTracksState() {
         tbempty::EmptyStateView view;
         const tbempty::EmptyStateOptions options;
