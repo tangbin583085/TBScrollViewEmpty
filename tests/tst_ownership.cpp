@@ -9,6 +9,41 @@
 class OwnershipTest : public QObject {
     Q_OBJECT
 private slots:
+    void replacedPageIsOwnedUntilDeferredDeletion() {
+        QPointer<QWidget> oldPage = new QWidget;
+        {
+            tbempty::EmptyStateHost host(new QWidget);
+            host.setCustomView(oldPage);
+            host.setCustomView(new QWidget);
+            QVERIFY(oldPage && oldPage->parent() == &host);
+        }
+        QVERIFY(oldPage.isNull());
+    }
+    void invalidContentIsRejected() {
+        QVERIFY_EXCEPTION_THROWN(tbempty::EmptyStateHost(nullptr), std::invalid_argument);
+        QWidget parent;
+        QVERIFY_EXCEPTION_THROWN((tbempty::EmptyStateHost(&parent, {}, &parent)), std::invalid_argument);
+    }
+    void releasedChildButtonsCannotRetryTheHost() {
+        tbempty::EmptyStateHost host(new QWidget);
+        auto* custom = new QWidget;
+        auto* button = new QPushButton(custom);
+        connect(button, &QPushButton::clicked,
+                host.controller(), &tbempty::EmptyStateController::requestRetry);
+        int customNotifications = 0;
+        connect(&host, &tbempty::EmptyStateHost::stateChanged, custom,
+                [&customNotifications] { ++customNotifications; });
+        host.setCustomView(custom);
+        QSignalSpy retries(&host, &tbempty::EmptyStateHost::retryRequested);
+        button->click();
+        QCOMPARE(retries.count(), 1);
+        auto* taken = host.takeCustomView();
+        button->click();
+        QCOMPARE(retries.count(), 1);
+        host.controller()->setLoading();
+        QCOMPARE(customNotifications, 0);
+        delete taken;
+    }
     void replacementDeletesOldWidgetLater() {
         tbempty::EmptyStateHost host(new QWidget);
         QPointer<QWidget> first = new QWidget;
