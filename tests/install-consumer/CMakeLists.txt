@@ -1,0 +1,5 @@
+cmake_minimum_required(VERSION 3.16)
+project(TBEmptyInstallConsumer LANGUAGES CXX)
+find_package(TBScrollViewEmpty 1 CONFIG REQUIRED)
+add_executable(tbempty_consumer main.cpp)
+target_link_libraries(tbempty_consumer PRIVATE TBScrollViewEmpty::Widgets)
