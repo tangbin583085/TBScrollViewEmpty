@@ -137,3 +137,85 @@ examples/widgets/         示例程序
 tests/                    Qt Test 源码
 docs/                     接入和行为说明
 ```
+
+---
+
+## English
+
+TBScrollViewEmpty is a small C++17 / Qt Widgets component for list-page states.
+It shows loading, empty, offline, or error pages and returns to the content widget
+when data is available. It works with QListView, QTableView, QTreeView, or other QWidget content.
+
+The library does not fetch data, detect network connectivity, or modify your model.
+
+### Integration
+
+Use an existing C++17 toolchain, CMake 3.16+, and Qt 5.15 or Qt 6 with Widgets.
+The controller links Qt Core; the UI links Qt Widgets. Both targets are built by default.
+
+```cmake
+add_subdirectory(third_party/TBScrollViewEmpty)
+target_link_libraries(MyApp PRIVATE TBScrollViewEmpty::Widgets)
+```
+
+See [building](docs/building.md) and [qmake integration](docs/qmake.md).
+No Qt installation or download is performed automatically.
+
+### Usage
+
+```cpp
+#include <TBScrollViewEmpty/TBScrollViewEmpty.hpp>
+#include <QListView>
+
+auto* list = new QListView;
+list->setModel(model);
+
+tbempty::EmptyStateOptions options;
+options.emptyTitle = QStringLiteral("No devices");
+options.retryButtonText = QStringLiteral("Scan again");
+auto* host = new tbempty::EmptyStateHost(list, options);
+layout->addWidget(host);
+
+QObject::connect(host, &tbempty::EmptyStateHost::retryRequested, host, [host] {
+    host->controller()->setLoading();
+    // Start an asynchronous request, then update the model on the GUI thread.
+});
+host->controller()->update(model->rowCount(), tbempty::NetworkStatus::Online);
+```
+
+Create `model` and `layout` in your application. Model changes are not observed automatically;
+call `update` when data changes.
+
+### States and options
+
+A positive item count shows Content, including when offline. With no items, an Offline
+network value shows Offline; Online and Unknown show Empty. Explicit setters support
+Loading, Error, Offline, Empty, and Content. Identical snapshots do not emit again, but
+a changed item count, network value, or error message does.
+
+Use `setOptions` to refresh titles, details, icon, and retry text. Loading shows a busy
+progress bar and hides the retry button. Empty, Offline, and Error can show retry.
+Error text is rendered as plain text; an empty error uses the configured fallback.
+
+### Ownership and custom pages
+
+The host owns its content widget and any custom page. Pass heap-allocated widgets.
+A custom page must have no parent. Replacing it hides it and schedules deletion;
+`setCustomView(nullptr)` restores the default page. `takeCustomView()` releases ownership,
+and the caller becomes responsible for deletion.
+
+A custom page handles its own text and retry wiring. See [custom views](docs/custom-views.md).
+All UI operations belong on the GUI thread. Send background results through queued connections.
+
+The host switches the whole content widget using a stacked layout. It does not overlay
+the viewport, so table headers are hidden along with the table while a status page is active.
+
+### Examples and tests
+
+Three examples demonstrate a list, a table, and a custom page. The list uses a timer to
+simulate a retry, without connecting to a device.
+
+Qt Test sources cover state decisions, duplicate notifications, view visibility, retry
+signals, custom page replacement, and ownership. Controller tests do not create Widgets;
+UI tests require QApplication and a suitable platform plugin.
+See [verification](docs/verification.md) for commands and checks.
