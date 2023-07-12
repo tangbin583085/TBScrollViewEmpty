@@ -32,3 +32,15 @@ target_link_libraries(MyApp PRIVATE TBScrollViewEmpty::Widgets)
 安装包需要与构建时相同的 Qt 主版本及兼容的编译器/ABI。
 Windows 上库和使用方应使用匹配的 MSVC 或 MinGW 工具链。
 库使用静态链接目标，不需要自行处理 DLL 导出宏；Qt 的部署由应用负责。
+
+## English
+
+Build with an existing Qt 5.15 or Qt 6 installation, a C++17 compiler, and CMake 3.16+.
+Tests require Qt Test. Examples and tests are opt-in; dependencies are never downloaded.
+
+Use the commands above for a source build or an installed package.
+Link `TBScrollViewEmpty::Widgets`, or `TBScrollViewEmpty::Core` when only using
+the controller. The default project configuration still requires Qt Widgets.
+
+Consumers must use the same Qt major version and a compatible compiler/ABI.
+Deploy Qt with your application as usual; the library does not bundle it.
