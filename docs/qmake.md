@@ -18,3 +18,11 @@ HEADERS 列表必须包含有 Q_OBJECT 的头文件，让 qmake 生成 moc 代�
 修改 .pro 后重新运行 qmake。需要 C++ 异常支持，不能禁用异常后继续使用这个接口。
 
 不要同时把同一份源码编译进应用又链接已构建的静态库，否则可能重复定义。
+
+## English
+
+Add the three source files and public headers as shown above. Keep Q_OBJECT headers
+in HEADERS so qmake runs moc. Enable C++17 and exception support. MSVC source encoding
+must support the default UTF-8 text.
+
+Compile sources directly or link the CMake-built library; do not do both.
