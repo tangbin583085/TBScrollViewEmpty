@@ -16,3 +16,19 @@ takeCustomView 返回无父对象且隐藏的控件，不删除它；调用方�
 Host 析构时释放仍归它所有的控件。通常不要在外部手动删除被托管的控件；
 代码对自定义页或内容被外部删除提供了回退处理，但这不是推荐用法。
 内容被删除时 Host 会展示空页，控制器快照仍代表最后一次业务状态。
+
+## English
+
+The host owns its content and active custom page. Use heap widgets.
+Custom pages must have no parent and cannot be the host or content.
+
+A custom page is shown for every non-content state. Connect stateChanged if it needs
+its own state-specific text. Connect its retry button to controller()->requestRetry.
+
+Replacement hides the old page, disconnects host/controller receivers, and schedules deletion.
+takeCustomView instead releases a hidden, unparented widget to the caller. Reconnect it
+when reusing it and delete it when no longer needed.
+Already queued calls may still be delivered after disconnection; guard stale requests in the application.
+
+Host destruction deletes widgets still owned by it. Avoid externally deleting them.
+A defensive fallback exists if that happens; loss of content does not alter the controller's snapshot.
