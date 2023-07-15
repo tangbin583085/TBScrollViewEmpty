@@ -12,3 +12,14 @@ Qt Widgets 必须在 GUI 线程创建和操作。控制器虽然只依赖 Qt Cor
 
 Qt 在接收对象销毁时自动移除带 context 的连接。lambda 中引用的其他对象仍需自行保证生命周期。
 应用不要在状态信号回调里直接删除发送者；需要关闭页面时使用 deleteLater。
+
+## English
+
+Create and update Widgets on the GUI thread. Invoke each controller on its owning thread.
+Send background results through queued connections, update the model, then call update.
+
+The library does not cancel requests or reject stale responses. Use request IDs or a
+cancellation mechanism when switching devices or starting a new load.
+
+Use context-bound signal connections, manage captured object lifetimes, and prefer
+deleteLater when closing a page from a state callback.
