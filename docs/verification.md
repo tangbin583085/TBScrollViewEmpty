@@ -17,3 +17,12 @@ GUI 测试需要平台插件。无桌面环境且已经安装 offscreen 插件�
 
 这不能替代真机上的字体、缩放、主题、键盘和无障碍检查。
 没有 Qt 工具链时，仅能检查源码和配置，不能称为编译或测试通过。
+
+## English
+
+The checklist covers state transitions, retry delivery, display rules, resizing, custom-page
+ownership, examples, and installed-package use. It is a list of checks to perform, not a test report.
+
+Run Qt Test in supported Qt versions and build configurations. An installed offscreen plugin
+can support headless UI checks, but fonts, scaling, themes, keyboard behavior, and accessibility
+still need a real desktop review. Source review alone is not a successful build or test run.
