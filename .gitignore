@@ -1,6 +1,8 @@
 /build/
 /build-*/
 /install/
+/Testing/
+/test-results/
 CMakeUserPresets.json
 *.user
 *.swp
