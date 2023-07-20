@@ -219,3 +219,7 @@ Qt Test sources cover state decisions, duplicate notifications, view visibility,
 signals, custom page replacement, and ownership. Controller tests do not create Widgets;
 UI tests require QApplication and a suitable platform plugin.
 See [verification](docs/verification.md) for commands and checks.
+
+## License
+
+MIT. See [LICENSE](LICENSE).
