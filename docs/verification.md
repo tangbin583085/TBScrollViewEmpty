@@ -18,6 +18,15 @@ GUI 测试需要平台插件。无桌面环境且已经安装 offscreen 插件�
 这不能替代真机上的字体、缩放、主题、键盘和无障碍检查。
 没有 Qt 工具链时，仅能检查源码和配置，不能称为编译或测试通过。
 
+安装后的独立使用方位于 tests/install-consumer。完成安装后可配置：
+
+```sh
+cmake -S tests/install-consumer -B build-consumer -DCMAKE_PREFIX_PATH="/path/to/install;/path/to/Qt"
+cmake --build build-consumer --config Debug
+```
+
+检查键盘 Tab 顺序、重试按钮的 Enter/Space 操作以及系统缩放下的图标显示。
+
 ## English
 
 The checklist covers state transitions, retry delivery, display rules, resizing, custom-page
@@ -26,3 +35,8 @@ ownership, examples, and installed-package use. It is a list of checks to perfor
 Run Qt Test in supported Qt versions and build configurations. An installed offscreen plugin
 can support headless UI checks, but fonts, scaling, themes, keyboard behavior, and accessibility
 still need a real desktop review. Source review alone is not a successful build or test run.
+
+The separate tests/install-consumer project exercises installed CMake targets.
+Configure it with both the library install prefix and Qt prefix as shown above.
+
+Check Tab navigation, Enter/Space activation, and icon rendering at the desktop's scale factor.
