@@ -103,6 +103,14 @@ static const BOOL tb_isShowButton = NO; // 显示按钮
         
         // 使用默认的
         emptyView = [self setDefaultView:rect];
+        
+        NSString *systemVersion = [[UIDevice currentDevice] systemVersion];
+        if ([systemVersion hasPrefix:@"25."]) {
+            // imageTopNetName 变化相应的frame
+            NSLog(@"这是 iOS 25 系统");
+            // 进行相应的逻辑自定义处理即可
+        }
+
     }
     
     // emptyView设置key
